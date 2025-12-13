@@ -97,18 +97,17 @@ def detect_question_type_and_safety(question):
 # =========================================================
 
 def clean_output(ans_text):
-    # Regex tìm ký tự A, B, C, D (không phân biệt hoa thường)
-    tag_match = re.search(r"<ans>\s*([A-Da-d])\s*</ans>", ans_text)
+    # Ưu tiên 1: Tìm trong thẻ <ans> (Mở rộng phạm vi từ A đến J để bắt được cả E, F...)
+    tag_match = re.search(r"<ans>\s*([A-Ja-j])\s*</ans>", ans_text)
     if tag_match:
         return tag_match.group(1).upper()
 
-    matches = re.findall(r"\b([A-Da-d])\b", ans_text)
+    # Ưu tiên 2: Tìm ký tự đứng riêng lẻ cuối cùng (Cũng sửa thành A-J hoa và thường)
+    matches = re.findall(r"\b([A-Ja-j])\b", ans_text)
     if matches:
         return matches[-1].upper()
 
     return SAFE_ANSWER_DEFAULT
-
-
 # =========================================================
 # GỌI LLM
 # =========================================================
@@ -191,7 +190,7 @@ def solve_question(item):
     model_to_use = "small"
 
     # --- Prompt chỉ thị LLM trả về chữ cái tương ứng ---
-    instruction_text = "Hãy chọn đáp án đúng (tương ứng 0->A, 1->B, 2->C, 3->D, 3->D, 4->E, 5->F, 6->G, 7->H, 8->I, 9->J) và chỉ trả về chữ cái (A, B, C, D) trong thẻ <ans>."
+    instruction_text = "Hãy chọn đáp án đúng (tương ứng 0->A, 1->B, 2->C, 3->D, 3->D, 4->E, 5->F, 6->G, 7->H, 8->I, 9->J) và chỉ trả về chữ cái (A, B, C, D, E, F, G, H, I, J) trong thẻ <ans>."
 
     if q_type == "STEM":
         model_to_use = "large"
