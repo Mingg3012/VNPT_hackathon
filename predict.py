@@ -73,8 +73,8 @@ def detect_question_type_and_safety(question):
         "đạo hàm", "tích phân", "nguyên hàm", "vector", "ma trận",
         "vận tốc", "gia tốc", "lực", "điện trở", "năng lượng", "công suất",
         "lãi suất", "gdp", "lạm phát", "cung cầu", "độ co giãn",
-        "mol", "phản ứng", "cân bằng", "khối lượng",
-    ]
+        "mol", "phản ứng", "cân bằng", "khối lượng", "latex", "$", "\\frac" 
+        ]
 
     if any(k in q_lower for k in stem_keywords):
         return "STEM"
@@ -117,12 +117,12 @@ def call_vnpt_llm(prompt, model_type="small"):
         url = config.URL_LLM_LARGE
         headers = config.HEADERS_LARGE
         model = "vnptai_hackathon_large"
-        max_tokens = 400
+        max_tokens = 600
     else:
         url = config.URL_LLM_SMALL
         headers = config.HEADERS_SMALL
         model = "vnptai_hackathon_small"
-        max_tokens = 150
+        max_tokens = 200
 
     payload = {
         "model": model,
@@ -185,8 +185,6 @@ def solve_question(item):
         if isinstance(choices, list)
         else str(choices)
     )
-
-    CONTEXT_LENGTH_THRESHOLD = 1200
     model_to_use = "small"
 
     # --- Prompt chỉ thị LLM trả về chữ cái tương ứng ---
@@ -195,68 +193,59 @@ def solve_question(item):
     if q_type == "STEM":
         model_to_use = "large"
         prompt = f"""
-        Bạn là một Giáo sư Khoa học Tự nhiên xuất sắc.
+        Bạn là Giáo sư Khoa học Tự nhiên. Nhiệm vụ: Giải bài tập chính xác tuyệt đối.
 
-        --- THÔNG TIN BỔ TRỢ ---
+        --- CÔNG THỨC & KIẾN THỨC BỔ TRỢ (CONTEXT) ---
         {context_text}
 
-        Câu hỏi:
-        {real_question}
+        --- BÀI TOÁN ---
+        Câu hỏi: {real_question}
 
-        Các lựa chọn (đánh số từ 0):
+        Các lựa chọn (Index từ 0):
         {choices_str}
 
-        CHIẾN LƯỢC SUY LUẬN:
-        1. Xác định dạng bài và công thức/định luật cần dùng.
-        2. Trích xuất dữ kiện quan trọng.
-        3. Thực hiện tính toán hoặc suy luận logic.
-        4. SO KHỚP kết quả với TẤT CẢ các lựa chọn và loại trừ các phương án sai.
-        5. Chọn phương án DUY NHẤT đúng nhất.
+        --- HƯỚNG DẪN GIẢI ---
+        1. Xác định công thức/định lý từ CONTEXT cần dùng.
+        2. Trích xuất các con số từ Câu hỏi (Lưu ý đơn vị).
+        3. THỰC HIỆN TÍNH TOÁN TỪNG BƯỚC (Step-by-step calculation). Không được đoán mò.
+        4. Đối chiếu kết quả với các lựa chọn.
 
-        YÊU CẦU ĐẦU RA:
-        - Trình bày suy luận ngắn gọn.
+        --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
+        - KHÔNG trình bày lời giải.
+        - KHÔNG giải thích dài.
         - {instruction_text}
         """
     else:
-        if (
-            len(context_text) > CONTEXT_LENGTH_THRESHOLD
-            or q_type == "PRECISION"
-            or is_reading_comprehension
-        ):
+        # Prompt Context nhấn mạnh vào việc trung thành với văn bản
+        CONTEXT_LENGTH_THRESHOLD = 1200
+        if len(context_text) > CONTEXT_LENGTH_THRESHOLD or q_type == "PRECISION" or "Đoạn thông tin:" in question:
             model_to_use = "large"
 
         prompt = f"""
-        Bạn là chuyên gia phân tích thông tin.
+        Bạn là chuyên gia phân tích thông tin. Nhiệm vụ: Trả lời câu hỏi dựa trên văn bản cung cấp.
 
-        --- DỮ LIỆU THAM KHẢO (CONTEXT) ---
+        --- VĂN BẢN THAM KHẢO (CONTEXT) ---
         {context_text}
-        --- HẾT CONTEXT ---
 
-        Câu hỏi:
+        --- CÂU HỎI ---
         {real_question}
 
-        Các lựa chọn (đánh số từ 0):
+        Các lựa chọn:
         {choices_str}
 
-        NGUYÊN TẮC QUAN TRỌNG:
-        - Nếu CONTEXT có thông tin liên quan trực tiếp: PHẢI ưu tiên CONTEXT.
-        - Chỉ dùng kiến thức bên ngoài khi CONTEXT không đủ hoặc không liên quan.
-        - Không được tự suy diễn trái với CONTEXT.
+        --- CHIẾN LƯỢC ---
+        1. Tìm thông tin trong CONTEXT khớp với từ khóa câu hỏi.
+        2. Chọn đáp án ĐƯỢC HỖ TRỢ BỞI CONTEXT.
+        3. Cảnh báo: Nếu CONTEXT khác với kiến thức ngoài, chọn phương án phù hợp nhất với CONTEXT, KHÔNG dùng kiến thức ngoài.
+        4. Nếu câu hỏi yêu cầu suy luận logic, hãy giải thích ngắn gọn.
 
-        CHIẾN LƯỢC:
-        1. Tìm câu trong CONTEXT liên quan trực tiếp đến câu hỏi.
-        2. Đối chiếu từng lựa chọn với CONTEXT.
-        3. Loại trừ các phương án không khớp.
-        4. Chọn đáp án đúng nhất.
-
-        YÊU CẦU ĐẦU RA:
-        - Trình bày suy luận ngắn gọn.
+        --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
+        - KHÔNG giải thích dài, lan man.
         - {instruction_text}
         """
 
     ans = call_vnpt_llm(prompt, model_type=model_to_use)
     final_choice = clean_output(ans)
-
     return final_choice, context_text
 
 
