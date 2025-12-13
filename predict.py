@@ -251,7 +251,8 @@ def solve_question(item):
         4. Chọn đáp án đúng nhất.
 
         YÊU CẦU ĐẦU RA:
-        {instruction_text}
+        - Trình bày suy luận ngắn gọn.
+        - {instruction_text}
         """
 
     ans = call_vnpt_llm(prompt, model_type=model_to_use)
