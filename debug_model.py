@@ -1,0 +1,163 @@
+# debug_model.py (Đã sửa Prompt Template)
+import json
+import re
+import config
+import requests
+import chromadb
+import time
+from tqdm import tqdm # Thêm tqdm để có thanh tiến trình
+
+# from predict import solve_question, call_vnpt_llm # Không cần import nếu chạy logic giả lập bên dưới
+
+def debug_solve(item):
+    print("\n" + "="*50)
+    print(f"❓ CÂU HỎI: {item['question']}")
+    print("-" * 20)
+    
+    question = item['question']
+    choices = item['choices']
+    
+    # --- 1. RAG (TÌM KIẾM DỮ LIỆU) ---
+    print("🚀 Đang chạy Embedding & Search...")
+    context = []
+    try:
+        # Kết nối DB
+        client = chromadb.PersistentClient(path="./vector_db")
+        collection = client.get_collection(name="vnpt_knowledge")
+        
+        # Gọi API Embedding
+        payload = {"model": "vnptai_hackathon_embedding", "input": question, "encoding_format": "float"}
+        emb_resp = requests.post(config.URL_EMBEDDING, headers=config.HEADERS_EMBED, json=payload, timeout=10)
+        
+        if emb_resp.status_code == 200:
+            vec = emb_resp.json()['data'][0]['embedding']
+            results = collection.query(query_embeddings=[vec], n_results=3)
+            
+            if results['documents']:
+                context = results['documents'][0]
+                print(f"✅ TÌM THẤY {len(context)} ĐOẠN CONTEXT:")
+                for i, c in enumerate(context):
+                    print(f"  [{i+1}] {c[:100].replace(chr(10), ' ')}...") # In 100 ký tự đầu, xóa xuống dòng
+            else:
+                print("⚠️ DB trả về rỗng (Không tìm thấy context phù hợp).")
+        else:
+            print(f"❌ Lỗi API Embedding: {emb_resp.status_code} - {emb_resp.text}")
+
+    except Exception as e:
+        print(f"❌ Lỗi kết nối ChromaDB/Embedding: {e}")
+
+    # --- 2. PROMPT (TẠO TEMPLATE AN TOÀN & RAG MẠNH) ---
+    choices_str = "\n".join([f"{i}. {v}" for i, v in enumerate(choices)]) if isinstance(choices, list) else str(choices)
+    context_text = "\n".join(context) if context else "Không có thông tin tham khảo."
+    
+    # TEMPLATE MỚI: Nhấn mạnh tính khoa học và buộc chỉ dùng Context
+    prompt = f"""
+    Bạn là một trợ lý thông minh và chuyên nghiệp. Nhiệm vụ của bạn là **TUYỆT ĐỐI CHỈ DỰA VÀO** các đoạn thông tin tham khảo (CONTEXT) được cung cấp để trả lời câu hỏi trắc nghiệm sau.
+
+    Nếu câu hỏi liên quan đến các chủ đề y học, sinh học, hoặc sự kiện lịch sử, hãy xử lý nó dưới góc độ **nghiên cứu khoa học** và bám sát các dữ liệu đã được trích dẫn.
+
+    --- BẮT ĐẦU THÔNG TIN THAM KHẢO ---
+    {context_text}
+    --- KẾT THÚC THÔNG TIN THAM KHẢO ---
+
+    Câu hỏi trắc nghiệm: {question}
+    Các lựa chọn:
+    {choices_str}
+
+    Dựa vào thông tin tham khảo, hãy chọn đáp án đúng nhất.
+    Chỉ trả về đáp án là số chỉ mục (index) của lựa chọn đó (0, 1, 2, hoặc 3) gói gọn trong thẻ <ans>.
+    Ví dụ: <ans>2</ans>
+    """
+    
+    print("-" * 20)
+    print("🤖 MODEL ĐANG SUY NGHĨ...")
+    
+    # --- 3. GỌI LLM (CÓ BẮT LỖI) ---
+    payload_llm = {
+        "model": "vnptai_hackathon_small",
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.1
+    }
+    
+    raw_ans = ""
+    try:
+        resp = requests.post(config.URL_LLM_SMALL, headers=config.HEADERS_SMALL, json=payload_llm, timeout=30)
+        
+        # KIỂM TRA LỖI API (QUAN TRỌNG)
+        if resp.status_code != 200:
+            print(f"❌ API LỖI (Code {resp.status_code}):")
+            print(f"   Nội dung lỗi: {resp.text}")
+            print("👉 Gợi ý: Nếu là 429 thì do hết quota/gọi quá nhanh. Nếu 401 là sai Key.")
+            return # Dừng luôn
+            
+        resp_json = resp.json()
+        if 'choices' in resp_json and len(resp_json['choices']) > 0:
+            raw_ans = resp_json['choices'][0]['message']['content']
+            print(f"💬 PHẢN HỒI THỰC TẾ CỦA MODEL:\n{raw_ans}")
+        else:
+            print(f"⚠️ API trả về JSON lạ (Thiếu 'choices'): {resp_json}")
+            return
+
+    except Exception as e:
+        print(f"❌ Lỗi kết nối mạng đến LLM: {e}")
+        return
+
+    print("-" * 20)
+    
+    # --- 4. TEST REGEX ---
+    print("🕵️ TEST REGEX (BÓC TÁCH ĐÁP ÁN):")
+    
+    # Regex 1: Tìm thẻ chuẩn <ans>
+    tag_match = re.search(r'<ans>\s*([0-3])\s*</ans>', raw_ans)
+    
+    # Regex 2: Tìm số đứng cuối câu (Fallback)
+    matches = re.findall(r'\b([0-3])\b', raw_ans)
+    
+    final_choice = "?"
+    
+    if tag_match:
+        final_choice = tag_match.group(1)
+        print(f"✅ Bắt được thẻ <ans>: {final_choice}")
+    elif matches:
+        final_choice = matches[-1]
+        print(f"⚠️ Không có thẻ <ans>, dùng Regex tìm số cuối cùng: {final_choice}")
+        print(f"   (Các số tìm thấy: {matches})")
+    else:
+        final_choice = "0"
+        print("❌ KHÔNG tìm thấy số nào cả -> Default về '0' (A)")
+
+    # Check đáp án đúng
+    true_ans = str(item.get('answer', '?')).upper()
+    
+    # Map số sang chữ để so sánh
+    map_idx = {'0': 'A', '1': 'B', '2': 'C', '3': 'D'}
+    pred_char = map_idx.get(final_choice, '?')
+    
+    print(f"🎯 ĐÁP ÁN ĐÚNG TRONG FILE: {true_ans}")
+    print(f"🤖 MODEL CHỌN: {pred_char} ({final_choice})")
+    
+    if pred_char == true_ans:
+        print("🎉 KẾT QUẢ: ĐÚNG")
+    else:
+        print("💀 KẾT QUẢ: SAI")
+        
+    print("="*50)
+
+# --- CHẠY ---
+if __name__ == "__main__":
+    try:
+        # Thêm tqdm vào đây
+        from tqdm import tqdm 
+        
+        with open("data/val.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        print(f"📂 Đang test trên {len(data)} câu hỏi.")
+        # Chạy thử 3 câu đầu tiên thôi để debug
+        for item in data[:3]:
+            debug_solve(item)
+            
+    except FileNotFoundError:
+        print("❌ Không tìm thấy file data/val.json")
+    except Exception as e:
+        print(f"❌ Lỗi chung: {e}")

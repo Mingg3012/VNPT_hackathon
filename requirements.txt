@@ -1,0 +1,5 @@
+requests
+pandas
+chromadb
+tqdm
+numpy
