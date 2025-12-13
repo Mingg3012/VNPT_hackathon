@@ -216,7 +216,7 @@ def solve_question(item):
 
         YÊU CẦU ĐẦU RA:
         - Trình bày suy luận ngắn gọn.
-        - Dòng cuối cùng PHẢI là đáp án trong thẻ <ans>.
+        - {instruction_text}
         """
     else:
         if (
@@ -249,6 +249,9 @@ def solve_question(item):
         2. Đối chiếu từng lựa chọn với CONTEXT.
         3. Loại trừ các phương án không khớp.
         4. Chọn đáp án đúng nhất.
+
+        YÊU CẦU ĐẦU RA:
+        {instruction_text}
         """
 
     ans = call_vnpt_llm(prompt, model_type=model_to_use)
