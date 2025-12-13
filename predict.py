@@ -92,42 +92,44 @@ def detect_question_type_and_safety(question):
     return "NORMAL"
 
 
-# =========================================================
-# CLEAN OUTPUT (BẮT CHỮ CÁI)
-# =========================================================
-
 def clean_output(ans_text):
-    # Ưu tiên 1: Tìm trong thẻ <ans> (Mở rộng phạm vi từ A đến J để bắt được cả E, F...)
-    tag_match = re.search(r"<ans>\s*([A-Ja-j])\s*</ans>", ans_text)
+    # 1. Ưu tiên tuyệt đối: Tìm trong thẻ <ans>
+    # Bắt A-J, không phân biệt hoa thường
+    tag_match = re.search(r"<ans>\s*([A-Ja-j])\s*</ans>", ans_text, re.IGNORECASE)
     if tag_match:
         return tag_match.group(1).upper()
 
-    # Ưu tiên 2: Tìm ký tự đứng riêng lẻ cuối cùng (Cũng sửa thành A-J hoa và thường)
-    matches = re.findall(r"\b([A-Ja-j])\b", ans_text)
-    if matches:
-        return matches[-1].upper()
-
+    # 2. Nếu không có thẻ, chỉ tìm chữ cái đứng riêng lẻ Ở CUỐI CÙNG của chuỗi output
+    # Regex này chỉ bắt A-J nếu nó nằm ở cuối câu (có thể theo sau là dấu chấm/xuống dòng)
+    # Tránh bắt nhầm chữ "a" trong "gia tốc a" nằm ở giữa câu.
+    last_match = re.search(r"\b([A-Ja-j])\s*(\.|)\s*$", ans_text, re.IGNORECASE)
+    if last_match:
+        return last_match.group(1).upper()
+        
+    # 3. Fallback: Nếu vẫn không tìm thấy, có thể trả về None để debug hoặc chọn đại A
+    # Khuyên dùng: In ra cảnh báo để biết model đang không tuân thủ format
+    # print(f"⚠️ Cảnh báo: Không tìm thấy đáp án trong output: {ans_text[:50]}...")
     return SAFE_ANSWER_DEFAULT
 # =========================================================
 # GỌI LLM
 # =========================================================
 
-def call_vnpt_llm(prompt, model_type="small"):
+def call_vnpt_llm(prompt, model_type="small", temperature=0.1):
     if model_type == "large":
         url = config.URL_LLM_LARGE
         headers = config.HEADERS_LARGE
         model = "vnptai_hackathon_large"
-        max_tokens = 600
+        max_tokens = 400
     else:
         url = config.URL_LLM_SMALL
         headers = config.HEADERS_SMALL
         model = "vnptai_hackathon_small"
-        max_tokens = 200
+        max_tokens = 150
 
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.1,
+        "temperature": temperature,
         "max_completion_tokens": max_tokens,
     }
 
@@ -188,7 +190,7 @@ def solve_question(item):
     model_to_use = "small"
 
     # --- Prompt chỉ thị LLM trả về chữ cái tương ứng ---
-    instruction_text = "Hãy chọn đáp án đúng (tương ứng 0->A, 1->B, 2->C, 3->D, 3->D, 4->E, 5->F, 6->G, 7->H, 8->I, 9->J) và chỉ trả về chữ cái (A, B, C, D, E, F, G, H, I, J) trong thẻ <ans>."
+    instruction_text = "Hãy chọn đáp án đúng (tương ứng 0->A, 1->B, 2->C, 3->D, 4->E, 5->F, 6->G, 7->H, 8->I, 9->J) và chỉ trả về chữ cái (A, B, C, D, E, F, G, H, I, J). BẮT BUỘC: Đáp án cuối cùng phải nằm trong thẻ <ans>, ví dụ: <ans>A</ans>."
 
     if q_type == "STEM":
         model_to_use = "large"
@@ -207,8 +209,8 @@ def solve_question(item):
         --- HƯỚNG DẪN GIẢI ---
         1. Xác định công thức/định lý từ CONTEXT cần dùng.
         2. Trích xuất các con số từ Câu hỏi (Lưu ý đơn vị).
-        3. THỰC HIỆN TÍNH TOÁN TỪNG BƯỚC (Step-by-step calculation). Không được đoán mò.
-        4. Đối chiếu kết quả với các lựa chọn.
+        3. Thực hiện tính toán nội bộ (KHÔNG trình bày ra ngoài) nhưng không được đoán mò.
+        4. Chỉ chọn MỘT đáp án duy nhất khớp kết quả.
 
         --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
         - KHÔNG trình bày lời giải.
@@ -222,7 +224,7 @@ def solve_question(item):
             model_to_use = "large"
 
         prompt = f"""
-        Bạn là chuyên gia phân tích thông tin. Nhiệm vụ: Trả lời câu hỏi dựa trên văn bản cung cấp.
+        Bạn là chuyên gia phân tích thông tin. Nhiệm vụ: Hãy đọc thật kĩ văn bản và trả lời câu hỏi dựa trên văn bản cung cấp.
 
         --- VĂN BẢN THAM KHẢO (CONTEXT) ---
         {context_text}
@@ -236,15 +238,19 @@ def solve_question(item):
         --- CHIẾN LƯỢC ---
         1. Tìm thông tin trong CONTEXT khớp với từ khóa câu hỏi.
         2. Chọn đáp án ĐƯỢC HỖ TRỢ BỞI CONTEXT.
-        3. Cảnh báo: Nếu CONTEXT khác với kiến thức ngoài, chọn phương án phù hợp nhất với CONTEXT, KHÔNG dùng kiến thức ngoài.
-        4. Nếu câu hỏi yêu cầu suy luận logic, hãy giải thích ngắn gọn.
+        3. Nếu CONTEXT không đủ thông tin, chọn đáp án được nhắc trực tiếp hoặc suy ra rõ ràng nhất từ CONTEXT. Không suy đoán ngoài.
+        4. Nếu câu hỏi yêu cầu suy luận logic, hãy thử suy luận.
 
         --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
         - KHÔNG giải thích dài, lan man.
         - {instruction_text}
         """
 
-    ans = call_vnpt_llm(prompt, model_type=model_to_use)
+    if q_type == "STEM":
+        ans = call_vnpt_llm(prompt, model_type="large", temperature=0.0)
+    else:
+        ans = call_vnpt_llm(prompt, model_type=model_to_use, temperature=0.1)
+
     final_choice = clean_output(ans)
     return final_choice, context_text
 
