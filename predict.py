@@ -15,8 +15,9 @@ except ImportError:
     pass
 
 # --- CẤU HÌNH ---
-BLACKLIST_KEYWORDS = ["sex", "khiêu dâm"] 
+BLACKLIST_KEYWORDS = ["sex", "khiêu dâm", "ma túy", "cờ bạc", "lừa đảo", "khủng bố", "tự tử", "hacking", "phân biệt chủng tộc", "xúc phạm", "lăng mạ"] 
 SAFE_ANSWER_DEFAULT = "A" # Mặc định trả về A (chữ cái)
+PARSE_FAIL_FLAG = "X"
 
 # =========================================================
 # KẾT NỐI VECTOR DB
@@ -93,60 +94,119 @@ def detect_question_type_and_safety(question):
 
 
 def clean_output(ans_text):
-    # 1. Ưu tiên tuyệt đối: Tìm trong thẻ <ans>
-    # Bắt A-J, không phân biệt hoa thường
-    tag_match = re.search(r"<ans>\s*([A-Ja-j])\s*</ans>", ans_text, re.IGNORECASE)
+    # 1. Xử lý trường hợp ans_text là None (Lỗi Server/Key/429/Timeout)
+    if ans_text is None:
+        # Trả về None: Dùng để kích hoạt Fallback trong solve_question
+        return None 
+
+    # 2. Xử lý trường hợp ans_text là chuỗi rỗng "" (Lỗi 400 Content Filter)
+    if ans_text == "":
+        # Trả về "Z": Dùng để báo hiệu CẤM TRẢ LỜI trong solve_question
+        return "Z"
+    
+    # Kể từ đây, ans_text là một chuỗi không rỗng
+    if not isinstance(ans_text, str):
+        # Trường hợp input không phải chuỗi, coi là lỗi Parsing/format
+        return PARSE_FAIL_FLAG # Trả về "X"
+
+    ans_text = ans_text.strip()
+
+    # ... (các bước parsing bằng regex) ...
+
+    tag_match = re.search(
+        r"<ans>\s*([A-Ja-j])\s*</ans>",
+        ans_text,
+        re.IGNORECASE
+    )
     if tag_match:
         return tag_match.group(1).upper()
 
-    # 2. Nếu không có thẻ, chỉ tìm chữ cái đứng riêng lẻ Ở CUỐI CÙNG của chuỗi output
-    # Regex này chỉ bắt A-J nếu nó nằm ở cuối câu (có thể theo sau là dấu chấm/xuống dòng)
-    # Tránh bắt nhầm chữ "a" trong "gia tốc a" nằm ở giữa câu.
-    last_match = re.search(r"\b([A-Ja-j])\s*(\.|)\s*$", ans_text, re.IGNORECASE)
+    mid_match = re.search(
+        r"(đáp án|answer|ans)\s*[:\-]?\s*\(?([A-Ja-j])\)?",
+        ans_text,
+        re.IGNORECASE
+    )
+    if mid_match:
+        return mid_match.group(2).upper()
+
+    last_match = re.search(
+        r"\b([A-Ja-j])\s*[\.\)\]]*\s*$",
+        ans_text,
+        re.IGNORECASE
+    )
     if last_match:
         return last_match.group(1).upper()
-        
-    # 3. Fallback: Nếu vẫn không tìm thấy, có thể trả về None để debug hoặc chọn đại A
-    # Khuyên dùng: In ra cảnh báo để biết model đang không tuân thủ format
-    # print(f"⚠️ Cảnh báo: Không tìm thấy đáp án trong output: {ans_text[:50]}...")
-    return SAFE_ANSWER_DEFAULT
+
+    # 3. Fallback cuối cùng nếu parsing thất bại (ĐÃ SỬA)
+    # Trả về cờ "X" để Fallback logic trong solve_question biết đây là lỗi Parse
+    return PARSE_FAIL_FLAG
+
+
 # =========================================================
 # GỌI LLM
 # =========================================================
 
-def call_vnpt_llm(prompt, model_type="small", temperature=0.1):
+def call_vnpt_llm(prompt, model_type="small", temperature=0.0):
+
     if model_type == "large":
         url = config.URL_LLM_LARGE
         headers = config.HEADERS_LARGE
-        model = "vnptai_hackathon_large"
-        max_tokens = 400
+        model_name = "vnptai_hackathon_large"
     else:
         url = config.URL_LLM_SMALL
         headers = config.HEADERS_SMALL
-        model = "vnptai_hackathon_small"
-        max_tokens = 150
+        model_name = "vnptai_hackathon_small"
 
     payload = {
-        "model": model,
+        "model": model_name,
         "messages": [{"role": "user", "content": prompt}],
         "temperature": temperature,
-        "max_completion_tokens": max_tokens,
+        "max_completion_tokens": 20,
+        "stop": ["</ans>", "\n"]
     }
 
-    for _ in range(5):
+    for attempt in range(3):
         try:
-            r = requests.post(url, headers=headers, json=payload, timeout=40)
-            if r.status_code == 200:
-                return r.json()["choices"][0]["message"]["content"]
-            elif r.status_code == 429:
-                print("⏳ Rate limit, ngủ 60s...")
-                time.sleep(60)
-            else:
-                time.sleep(2)
-        except Exception:
-            time.sleep(2)
+            r = requests.post(
+                url,
+                headers=headers,
+                json=payload,
+                timeout=60
+            )
 
-    return ""
+            if r.status_code == 200:
+                data = r.json() # ✅ Thêm dòng này
+                # ... (xử lý 200) ...
+                return data["choices"][0]["message"]["content"]
+
+
+            if r.status_code == 401:
+                print(f"❌ {model_type.upper()} 401 – Hết quota / quyền")
+                return None
+
+            # SỬA LỖI 429: Sử dụng thời gian chờ tăng dần
+            if r.status_code == 429:
+                wait_time = 60 + (attempt * 60) 
+                print(f"⏳ {model_type.upper()} rate limit → ngủ {wait_time}s")
+                time.sleep(wait_time)
+                continue
+                
+            if r.status_code == 400:
+                 # Logic này đã đúng: Dừng retry vì prompt không thay đổi
+                 print(f"❌ {model_type.upper()} 400 – Lỗi Content Filter. Dừng retry.")
+                 return ""
+
+            print(f"⚠️ {model_type.upper()} HTTP {r.status_code}: {r.text}")
+            time.sleep(5)
+
+        except requests.exceptions.ReadTimeout:
+            print(f"⏳ {model_type.upper()} timeout → retry")
+            time.sleep(5)
+
+    return None
+
+
+
 
 
 # =========================================================
@@ -187,72 +247,199 @@ def solve_question(item):
         if isinstance(choices, list)
         else str(choices)
     )
-    model_to_use = "small"
 
     # --- Prompt chỉ thị LLM trả về chữ cái tương ứng ---
     instruction_text = "Hãy chọn đáp án đúng (tương ứng 0->A, 1->B, 2->C, 3->D, 4->E, 5->F, 6->G, 7->H, 8->I, 9->J) và chỉ trả về chữ cái (A, B, C, D, E, F, G, H, I, J). BẮT BUỘC: Đáp án cuối cùng phải nằm trong thẻ <ans>, ví dụ: <ans>A</ans>."
 
     if q_type == "STEM":
-        model_to_use = "large"
         prompt = f"""
-        Bạn là Giáo sư Khoa học Tự nhiên. Nhiệm vụ: Giải bài tập chính xác tuyệt đối.
+        Bạn là Giáo sư Khoa học Tự nhiên. Nhiệm vụ: Giải bài tập một cách CHÍNH XÁC TUYỆT ĐỐI.
+        Không được đoán. Không được suy diễn ngoài dữ kiện.
+
+
 
         --- CÔNG THỨC & KIẾN THỨC BỔ TRỢ (CONTEXT) ---
+
+        CHỈ được sử dụng công thức và kiến thức xuất hiện trong CONTEXT dưới đây.
+        Nếu không có công thức phù hợp trong CONTEXT → không được tự suy ra công thức khác.
+
         {context_text}
 
+
+
         --- BÀI TOÁN ---
+
         Câu hỏi: {real_question}
 
         Các lựa chọn (Index từ 0):
         {choices_str}
 
-        --- HƯỚNG DẪN GIẢI ---
-        1. Xác định công thức/định lý từ CONTEXT cần dùng.
-        2. Trích xuất các con số từ Câu hỏi (Lưu ý đơn vị).
-        3. Thực hiện tính toán nội bộ (KHÔNG trình bày ra ngoài) nhưng không được đoán mò.
-        4. Chỉ chọn MỘT đáp án duy nhất khớp kết quả.
+
+
+        --- QUY TRÌNH GIẢI (BẮT BUỘC TUÂN THEO) ---
+
+        1. Xác định DUY NHẤT công thức/định lý cần dùng từ CONTEXT.
+        2. Trích xuất CHÍNH XÁC tất cả các giá trị số và đơn vị trong đề bài.
+        3. Thực hiện tính toán nội bộ.
+        4. ĐỐI CHIẾU kết quả tính được với TỪNG lựa chọn:
+        - Loại bỏ các đáp án sai đơn vị.
+        - Loại bỏ các đáp án không khớp giá trị.
+        5. Chỉ chọn đáp án khớp CHÍNH XÁC nhất với kết quả tính toán.
+        6. Nếu không có đáp án nào khớp chính xác → chọn đáp án KHỚP NHẤT VỀ GIÁ TRỊ VÀ ĐƠN VỊ
+            nhưng CHỈ khi sai số nhỏ và có thể do làm tròn số.
+            Nếu không → vẫn chọn đáp án khớp nhất về ĐƠN VỊ.
+
+
+
+
+        --- KIỂM TRA LẠI (SELF-CHECK) ---
+
+        Trước khi trả lời:
+        - Tự kiểm tra lại phép tính một lần.
+        - Đảm bảo index được chọn đúng với nội dung đáp án.
+
+
 
         --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
+
         - KHÔNG trình bày lời giải.
-        - KHÔNG giải thích dài.
-        - {instruction_text}
+        - KHÔNG giải thích.
+        - Đáp án trả về dựa trên hướng dẫn sau: {instruction_text}
         """
+
     else:
-        # Prompt Context nhấn mạnh vào việc trung thành với văn bản
-        CONTEXT_LENGTH_THRESHOLD = 1200
-        if len(context_text) > CONTEXT_LENGTH_THRESHOLD or q_type == "PRECISION" or "Đoạn thông tin:" in question:
-            model_to_use = "large"
 
         prompt = f"""
-        Bạn là chuyên gia phân tích thông tin. Nhiệm vụ: Hãy đọc thật kĩ văn bản và trả lời câu hỏi dựa trên văn bản cung cấp.
+        Bạn là chuyên gia phân tích thông tin. Nhiệm vụ: trả lời câu hỏi
+        CHỈ dựa trên văn bản được cung cấp. Không dùng kiến thức bên ngoài.
+
+
 
         --- VĂN BẢN THAM KHẢO (CONTEXT) ---
+
         {context_text}
 
+
+
         --- CÂU HỎI ---
+
         {real_question}
 
-        Các lựa chọn:
+
+
+        --- CÁC LỰA CHỌN ---
+
         {choices_str}
 
-        --- CHIẾN LƯỢC ---
-        1. Tìm thông tin trong CONTEXT khớp với từ khóa câu hỏi.
-        2. Chọn đáp án ĐƯỢC HỖ TRỢ BỞI CONTEXT.
-        3. Nếu CONTEXT không đủ thông tin, chọn đáp án được nhắc trực tiếp hoặc suy ra rõ ràng nhất từ CONTEXT. Không suy đoán ngoài.
-        4. Nếu câu hỏi yêu cầu suy luận logic, hãy thử suy luận.
+
+
+        --- BƯỚC 1: PHÂN LOẠI CÂU HỎI (THỰC HIỆN NỘI BỘ) ---
+
+        Xác định câu hỏi thuộc loại nào:
+        A. Truy xuất thông tin trực tiếp
+        (ai, khi nào, ở đâu, sự kiện gì, nhân vật nào...)
+        B. Nhận định / đánh giá / theo ngữ cảnh
+        (vai trò, ý nghĩa, nhận xét, đánh giá, nguyên nhân...)
+
+
+
+        --- BƯỚC 2: CHIẾN LƯỢC THEO LOẠI ---
+
+        [TRƯỜNG HỢP A – TRUY XUẤT THÔNG TIN]
+
+        - Chỉ chọn thông tin được nêu TRỰC TIẾP trong CONTEXT.
+        - Nếu CONTEXT có câu trả lời trùng khớp rõ ràng với câu hỏi → PHẢI chọn đáp án đó.
+        - KHÔNG:
+        + suy luận
+        + chọn người/sự kiện cùng nhóm
+        + chọn thông tin liên quan gián tiếp
+
+        Ví dụ cấm:
+        - Câu hỏi hỏi 1 nhân vật → không chọn nhân vật khác trong cùng danh sách.
+
+
+
+        [TRƯỜNG HỢP B – NHẬN ĐỊNH / THEO NGỮ CẢNH]
+
+        - Đọc TOÀN BỘ đoạn liên quan.
+        - Xác định các LUỒNG QUAN ĐIỂM nếu có (ủng hộ / phản đối).
+        - Ưu tiên đáp án phản ánh ĐẦY ĐỦ ngữ cảnh.
+        - Không chọn đáp án:
+        + chỉ đúng một phía
+        + hoặc không được CONTEXT hỗ trợ rõ ràng.
+
+
+
+        --- BƯỚC 3: KIỂM TRA CUỐI (BẮT BUỘC) ---
+
+        Trước khi trả lời, tự kiểm tra:
+        - Đáp án có được nêu trực tiếp hoặc suy ra rõ ràng từ CONTEXT không?
+        - Có đáp án nào khớp TRỰC TIẾP hơn không?
+        - Có chọn nhầm người/sự kiện cùng nhóm không?
+
+
 
         --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
-        - KHÔNG giải thích dài, lan man.
-        - {instruction_text}
+
+        - KHÔNG giải thích.
+        - Đáp án trả về dựa trên hướng dẫn sau: {instruction_text}
         """
 
-    if q_type == "STEM":
-        ans = call_vnpt_llm(prompt, model_type="large", temperature=0.0)
-    else:
-        ans = call_vnpt_llm(prompt, model_type=model_to_use, temperature=0.1)
+    # ================================
+    # 1️⃣ LUÔN GỌI SMALL TRƯỚC
+    # ================================
+    ans_small = call_vnpt_llm(prompt, model_type="small", temperature=0.0)
+    final_choice = clean_output(ans_small) # final_choice là A-J, None, Z, hoặc X
 
-    final_choice = clean_output(ans)
+    # --- KIỂM TRA LỖI 400 NGAY LẬP TỨC (Dấu hiệu: Z) ---
+    if final_choice == "Z":
+        print("🛑 Small LLM bị Content Filter. Trả về rỗng theo yêu cầu.")
+        return "", context_text # Trả về chuỗi rỗng ""
+
+    # ================================
+    # 2️⃣ FALLBACK LARGE (SỬA LỖI LOGIC)
+    # ================================
+    # Kích hoạt Fallback nếu: 
+    # A. Lỗi Server/Key/Timeout (final_choice == None)
+    # HOẶC
+    # B. Lỗi Parsing/Vô nghĩa (final_choice == PARSE_FAIL_FLAG "X")
+    
+    if final_choice is None or final_choice == PARSE_FAIL_FLAG: 
+        
+        print(f"🔄 Fallback SMALL → LARGE (Nguyên nhân: {'Lỗi Server/Key' if final_choice is None else 'Lỗi Format'})")
+        
+        ans_large = call_vnpt_llm(prompt, model_type="large", temperature=0.0)
+        large_choice = clean_output(ans_large)
+
+        # --- KIỂM TRA LỖI 400 CỦA LARGE ---
+        if large_choice == "Z":
+            print("🛑 Large LLM bị Content Filter. Trả về rỗng theo yêu cầu.")
+            return "", context_text 
+
+        # --- GÁN KẾT QUẢ LARGE HOẶC GÁN MẶC ĐỊNH ---
+        # Nếu Large trả lời thành công (không phải None, không phải X), dùng kết quả Large
+        if large_choice is not None and large_choice != PARSE_FAIL_FLAG:
+             final_choice = large_choice # Cập nhật kết quả (A-J)
+        else:
+             # Nếu Large cũng thất bại, trả về đáp án mặc định an toàn
+             final_choice = SAFE_ANSWER_DEFAULT
+    
+    # --- BƯỚC CUỐI CÙNG: ĐẢM BẢO LUÔN CÓ KẾT QUẢ HỢP LỆ ---
+    # Nếu Small thành công, nó sẽ nhảy qua Fallback và final_choice đã là A-J.
+    # Nếu Fallback xảy ra, final_choice đã được gán A-J hoặc SAFE_ANSWER_DEFAULT.
+    
+    # Trường hợp duy nhất cần kiểm tra lại là nếu có lỗi logic không lường trước.
+    if final_choice is None or final_choice == PARSE_FAIL_FLAG:
+        final_choice = SAFE_ANSWER_DEFAULT
+        
     return final_choice, context_text
+
+
+# print("TEST SMALL:")
+# print(call_vnpt_llm("Chỉ trả lời <ans>A</ans>", "small"))
+
+# print("TEST LARGE:")
+# print(call_vnpt_llm("Chỉ trả lời <ans>A</ans>", "large"))
 
 
 if __name__ == "__main__":
