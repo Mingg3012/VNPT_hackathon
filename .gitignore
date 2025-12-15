@@ -29,3 +29,5 @@ submission.csv
 .DS_Store
 .vscode/
 .idea/
+
+data/documents.txt
