@@ -327,7 +327,221 @@ BLACKLIST_KEYWORDS = [
     # --- Hate / slurs (VN obfuscations) ---
     "p a r k y", "p@rky", "par-ky",
     "n a m c a y", "n@m c@y", "nam-cay",
-    "t o c c o i", "t0c c0i", "tộc cối", "t0c c0i"
+    "t o c c o i", "t0c c0i", "tộc cối", "t0c c0i",
+    'buồi', 'buoi','dau buoi','daubuoi','caidaubuoi','nhucaidaubuoi','dau boi','bòi','dauboi','caidauboi','đầu bòy','đầu bùi','dau boy','dauboy','caidauboy','b`','cặc','cak','kak','kac','cac','concak','nungcak','bucak','caiconcac','caiconcak','cu','cặk','cak','dái','giái','zái','kiu','cứt','cuccut','cutcut','cứk','cuk','cười ỉa','cười ẻ','đéo','đếch','đếk','dek','đết','đệt','đách','dech','đ','deo','d','đel','đél','del','dell ngửi','dell ngui','dell chịu','dell chiu','dell hiểu','dell hieu','dellhieukieugi','dell nói','dell noi','dellnoinhieu','dell biết','dell biet','dell nghe','dell ăn','dell an','dell được','dell duoc','dell làm','dell lam','dell đi','dell di','dell chạy','dell chay','deohieukieugi','địt','đm','dm','đmm','dmm','đmmm','dmmm','đmmmm','dmmmm','đmmmmm','dmmmmm','đcm','dcm','đcmm','dcmm','đcmmm','dcmmm','đcmmmm','dcmmmm','đệch','đệt','dit','dis','diz','đjt','djt','địt mẹ','địt mịe','địt má','địt mía','địt ba','địt bà','địt cha','địt con','địt bố','địt cụ','dis me','disme','dismje','dismia','dis mia','dis mie','đis mịa','đis mịe','ditmemayconcho','ditmemay','ditmethangoccho','ditmeconcho','dmconcho','dmcs','ditmecondi','ditmecondicho','đụ','đụ mẹ','đụ mịa','đụ mịe','đụ má','đụ cha','đụ bà','đú cha','đú con mẹ','đú má','đú mẹ','đù cha','đù má','đù mẹ','đù mịe','đù mịa','đủ cha','đủ má','đủ mẹ','đủ mé','đủ mía','đủ mịa','đủ mịe','đủ mie','đủ mia','đìu','đờ mờ','đê mờ','đờ ma ma','đờ mama','đê mama','đề mama','đê ma ma','đề ma ma','dou','doma','duoma','dou má','duo má','dou ma','đou má','đìu má','á đù','á đìu','đậu mẹ','đậu má','đĩ','di~','đuỹ','điếm','cđĩ','cdi~','đilol','điloz','đilon','diloz','dilol','dilon','condi','condi~','dime','di me','dimemay','condime','condimay','condimemay','con di cho','con di cho','condicho','bitch','biz','bít chi','con bích','con bic','con bíc','con bít','phò','4`','lồn','l`','loz','lìn','nulo','ml','matlon','cailon','matlol','matloz','thml','thangmatlon','thangml','đỗn lì','tml','thml','diml','dml','hãm','xàm lol','xam lol','xạo lol','xao lol','con lol','ăn lol','an lol','mát lol','mat lol','cái lol','cai lol','lòi lol','loi lol','ham lol','củ lol','cu lol','ngu lol','tuổi lol','tuoi lol','mõm lol','mồm lol','mom lol','như lol','nhu lol','nứng lol','nung lol','nug lol','nuglol','rảnh lol','ranh lol','đách lol','dach lol','mu lol','banh lol','tét lol','tet lol','vạch lol','vach lol','cào lol','cao lol','tung lol','mặt lol','mát lol','mat lol','xàm lon','xam lon','xạo lon','xao lon','con lon','ăn lon','an lon','mát lon','mat lon','cái lon','cai lon','lòi lon','loi lon','ham lon','củ lon','cu lon','ngu lon','tuổi lon','tuoi lon','mõm lon','mồm lon','mom lon','như lon','nhu lon','nứng lon','nung lon','nug lon','nuglon','rảnh lon','ranh lon','đách lon','dach lon','mu lon','banh lon','tét lon','tet lon','vạch lon','vach lon','cào lon','cao lon','tung lon','mặt lon','mát lon','mat lon','cái lờ','cl','clgt','cờ lờ gờ tờ','cái lề gì thốn','đốn cửa lòng','sml','sapmatlol','sapmatlon','sapmatloz','sấp mặt','sap mat','vlon','vloz','vlol','vailon','vai lon','vai lol','vailol','nốn lừng','vcl','vl','vleu','chịch','chich','vãi','v~','đụ','nứng','nug','đút đít','chổng mông','banh háng','xéo háng','xhct','xephinh','la liếm','đổ vỏ','xoạc','xoac','chich choac','húp sò','fuck','fck','đụ','bỏ bú','buscu','ngu','óc chó','occho','lao cho','láo chó','bố láo','chó má','cờ hó','sảng','thằng chó','thang cho','thang cho','chó điên','thằng điên','thang dien','đồ điên','sủa bậy','sủa tiếp','sủa đi','sủa càn','mẹ bà','mẹ cha mày','me cha may','mẹ cha anh','mẹ cha nhà anh','mẹ cha nhà mày','me cha nha may','mả cha mày','mả cha nhà mày','ma cha may','ma cha nha may','mả mẹ','mả cha','kệ mẹ','kệ mịe','kệ mịa','kệ mje','kệ mja','ke me','ke mie','ke mia','ke mja','ke mje','bỏ mẹ','bỏ mịa','bỏ mịe','bỏ mja','bỏ mje','bo me','bo mia','bo mie','bo mje','bo mja','chetme','chet me','chết mẹ','chết mịa','chết mja','chết mịe','chết mie','chet mia','chet mie','chet mja','chet mje','thấy mẹ','thấy mịe','thấy mịa','thay me','thay mie','thay mia','tổ cha','bà cha mày','cmn','cmnl','tiên sư nhà mày','tiên sư bố','tổ sư',
+     # --- 1. Nhà cái & Cờ bạc online (Cập nhật brand mới nổi & slang dân chơi) ---
+   "kubet", "ku casino", "thabet", "tha casino",
+   "jun88", "new88", "shbet", "hi88", "f8bet", "ae888", "789bet", "66vip",
+   "sunwin", "go88", "b52", "rikvip", "manclub", "yo88", "zowin",
+   "đá gà thomo", "đá gà trực tiếp", "dagathomo",
+   "soi cầu", "soi cau", "bạch thủ", "bach thu", "song thủ",
+   "về bờ", "xa bờ", "nhảy cầu", "xa dao", "ra đảo",
+   "nổ hũ", "nohu", "quay hũ", "jackpot",
+   "kèo rung", "xả kèo", "bào cỏ",
+   "bóng 88", "bong88", "sbobet", "sv388",
+
+   # --- 2. Sex & Mại dâm biến tướng (Slang chuyên ngành/Checker) ---
+   "checker", "checkerviet", "thiên địa", "thiendia", "lẩu cua", "lau cua",
+   "bóc bánh", "boc banh", "trả bài", "tra bai",
+   "kave", "cave", "hàng họ", "hang ho",
+   "rau sạch", "chăn rau", "nông dân",
+   "massage yoni", "massage nuru", "tắm tiên",
+   "hjhj", "bj", "hj", "cia", "wc", "69", "96", # Các hành động
+   "some", "threesome", "gangbang", "gb", "swing", "swinger", "cuckold",
+   "fwd", "fwb", "ons", "419", # One night stand
+   "lộ link", "xin link", "share link", "tối cổ", "người tối cổ",
+   "clip full", "full không che", "uncen", "uncensored",
+   "tele", "zalo kín", "nhóm kín",
+
+   # --- 3. Chửi bới & Công kích (Thêm các từ ghép/trại âm) ---
+   "súc vật", "suc vat", "svat", "súc sinh",
+   "óc vật", "oc vat", "óc lợn", "oc lon", "đầu tôm",
+   "não tàn", "nao tan", "thiểu năng", "thieu nang", "khuyết tật não",
+   "ngu học", "ngu hoc", "ngu l", "ngu lol", "ngu như chó",
+   "rác rưởi", "rac ruoi", "phế vật",
+   "con giáp thứ 13", "tiểu tam", "trà xanh",
+   "thanh nghệ tĩnh", "hoa thanh quế", # Từ lóng phân biệt vùng miền (tránh dùng nhưng cần filter)
+   "bắc kỳ", "nam kỳ", "trung kỳ", "bắc cụ", "nam cầy",
+
+   # --- 4. Chính trị & Phản động (Toxic words hay spam) ---
+   "bò đỏ", "bo do", "bod0", "bodo",
+   "ba que", "3 que", "3/", "ba sọc", "3 sọc",
+   "đu càng", "du cang", "nail tộc",
+   "cali", "calicon", "khát nước",
+   "dư luận viên", "dlv", "47",
+   "việt tân", "viet tan", "chính phủ quốc gia",
+
+   # --- 5. Lừa đảo tài chính & Đa cấp 4.0 ---
+   "lùa gà", "lua ga", "úp bô", "up bo",
+   "thổi giá", "làm giá", "thao túng",
+   "sàn sập", "không rút được tiền",
+   "nhóm kéo", "kéo 1-1", "đọc lệnh", "chuyên gia tài chính",
+   "bảo hiểm vốn", "bao lỗ", "cam kết lợi nhuận",
+   "việc nhẹ lương cao", "nhập liệu tại nhà", "xâu hạt",
+   # --- 1. Bộ phận nhạy cảm (Từ lóng/Tục tĩu/Địa phương - Rất quan trọng để lọc porn) ---
+    "bướm", "buom", "bim bim", "cô bé", "co be", "khe kín",
+    "cậu nhỏ", "cau nho", "chim", "chym", "trym", "cờ him",
+    "cà vạt", "ca vat", "hòn", "bi", "trứng c",
+    "nhũ hoa", "nhu hoa", "đầu ti", "dau ti", "núm",
+    "mông", "mong", "bàn tọa", "đít", "dit", "ass",
+    "vòng 1", "vong 1", "vòng 3", "vong 3",
+    "bưởi", "cam", "mướp", "lép", # Ám chỉ ngực (Tùy ngữ cảnh nhưng trong app chat thường là sex)
+    "hàng", "hàng họ", "check hàng",
+
+    # --- 2. Hành động Kích dục/Dâm ô (Mô tả chi tiết hành vi) ---
+    "bú", "bu", "mút", "mut", "liếm", "liem", "vét", "vet",
+    "bú cu", "bu cu", "buscu", "thổi kèn", "thoi ken", "thổi sáo",
+    "vét máng", "vet mang", "húp sò", "hup so", "móc cua",
+    "nện", "nen", "phang", "phich", "đóng gạch", "dong gach",
+    "xếp hình", "xep hinh", "làm tình", "lam tinh", "make love",
+    "thủ dâm", "thu dam", "quay tay", "soc lo", "sóc lọ",
+    "bắn", "ban", "phun", "ra trong", "xuất trong", "creampie",
+    "dâm thủy", "nước nôi", "lên đỉnh", "len dinh",
+
+    # --- 3. Lừa đảo Booking Bar & Bẫy tình (Scam mới tại HN/HCM) ---
+    "booking bar", "booking pub", "book bàn",
+    "giao lưu kết bạn", "hẹn hò nghiêm túc", "tình một đêm",
+    "câu lạc bộ quý bà", "phi công trẻ", "lái máy bay",
+    "tuyển mẫu", "tuyển kols", "chụp ảnh sexy", "mẫu nude",
+    "casting", "đi tiệc", "tiếp khách", "rót bia",
+    "karaoke tay vịn", "tay vin",
+
+    # --- 4. Biến thể Teencode tục tĩu (Bổ sung các dạng viết tắt cực ngắn) ---
+    "lzi", "l`", "l~", "loz`", "lon`",
+    "cax", "cug", "ck", "vk", # (Cẩn thận: ck/vk có thể là vợ chồng, cần check ngữ cảnh)
+    "cmm", "dcmm", "clgt", "vcl", "vl", "vkl",
+    "đcm", "đkm", "đkmm", "đmm",
+    "cc", "c.c", "cmn", "cmnr",
+    "đéo", "đếch", "đíu", "đếu",
+    "mịa", "mje", "mja",
+    "fck", "fuck", "bitch", "dog",
+    "ml", "mặt l", "mặt lol",
+
+    # --- 5. Deepfake & Quấy rối hình ảnh (Công nghệ cao) ---
+    "lột đồ", "lot do", "undress", "xuyên thấu",
+    "ghép mặt", "ghep mat", "faceswap", "deepnude",
+    "chụp lén", "chup len", "quay trộm", "quay trom",
+    "camera giấu kín", "spycam",
+    # --- 1. Tín dụng đen & Đòi nợ thuê (Black Credit) ---
+    "vay nóng", "vay nong", "vay nhanh", "vay tiền online",
+    "bốc họ", "boc ho", "bát họ", "bat ho",
+    "giải ngân trong ngày", "duyệt hồ sơ nhanh", "vay tín chấp",
+    "nợ xấu vẫn vay", "hỗ trợ nợ xấu",
+    "khủng bố điện thoại", "gọi điện làm phiền",
+    "ghép ảnh thờ", "ghep anh tho", "cáo phó", # Chiêu trò đòi nợ
+    "bùng tiền", "bung tien", "xù nợ", "trốn nợ",
+    "app sập", "vay app", "ví trả sau", # Các từ khóa liên quan bùng app
+
+    # --- 2. Giấy tờ giả & Dịch vụ phi pháp (Fake Docs) ---
+    "làm bằng giả", "lam bang gia", "làm bằng đại học",
+    "chứng chỉ giả", "chung chi gia", "làm cmnd giả", "cccd giả",
+    "cavet xe giả", "giấy tờ xe giả", "biển số giả",
+    "bao đậu", "bao ly thuyet", "chống trượt", # Thi bằng lái/tiếng Anh
+    "chạy điểm", "chay diem", "mua điểm",
+    "khắc dấu giả", "làm con dấu",
+    "kết hôn giả", "bảo lãnh giả",
+
+    # --- 3. Mê tín dị đoan & Lừa đảo tâm linh (Spiritual Scams) ---
+    "bùa yêu", "bua yeu", "bùa ngải", "bua ngai", "chơi ngải",
+    "trục vong", "truc vong", "gọi hồn", "goi hon",
+    "kumanthong", "nuôi kumanthong", "búp bê ma",
+    "giải hạn online", "cúng dường online",
+    "xem bói online", "thầy cúng", "cô đồng",
+    "thánh đức chúa trời", "hội thánh", "tà đạo",
+
+    # --- 4. Hàng cấm & Vũ khí (Cụ thể hóa danh mục) ---
+    "pháo nổ", "phao no", "pháo hoa nổ", "pháo bi", "pháo dàn",
+    "thuốc pháo", "dây cháy chậm",
+    "dao phóng lợn", "dao phong lon", "mã tấu", "kiem nhat",
+    "súng cồn", "sung con", "súng bắn bi", "súng airsoft",
+    "bình xịt hơi cay", "dui cui dien", "roi điện",
+    "ngà voi", "sừng tê giác", "vảy tê tê", "cao hổ", "mật gấu",
+
+    # --- 5. Game & Văn hóa phẩm độc hại (Gaming/Toxic) ---
+    "trẻ trâu", "tre trau", "sửu nhi",
+    "cày thuê", "cay thue", "buff elo", "hack map", "auto click",
+    "tool hack", "mod skin",
+    "phim sex", "phim cap 3", "truyện sex", "truyện loạn luân",
+    "hentai", "manga 18+", "doujinshi",
+
+    # --- 1. Dược phẩm cấm & Lừa đảo sức khỏe (Health Scams/Black Market) ---
+    "thuốc kích dục", "thuoc kich duc", "nước hoa kích dục", "kẹo sâm hamer",
+    "thuốc mê", "thuoc me", "ghb", "thuốc ngủ liều cao",
+    "thuốc phá thai", "thuoc pha thai", "phá thai chui", "nạo hút",
+    "sìn sú", "bổ thận tráng dương", "kéo dài thời gian", "xuân dược",
+    "cam kết khỏi bệnh", "thần dược", "chữa ung thư", "trị dứt điểm",
+    "kem trộn", "tắm trắng cấp tốc", # Spam mỹ phẩm độc hại
+
+    # --- 2. Gian lận thi cử & Học thuật (Academic Dishonesty - Quan trọng với môi trường ĐH) ---
+    "thi hộ", "thi ho", "học hộ", "hoc ho",
+    "làm luận văn thuê", "viet thue luan van", "chạy đồ án", "làm tiểu luận",
+    "tai nghe siêu nhỏ", "tai nghe hạt đậu", "camera cúc áo", "kính camera", # Thiết bị gian lận
+    "mua điểm", "chạy điểm", "sửa điểm",
+    "bằng giả", "chứng chỉ giả", "bao đầu ra", "bao đỗ",
+
+    # --- 3. Hàng lậu, Hàng giả & Lừa đảo công nghệ ---
+    "hàng lậu", "hang lau", "trốn thuế", "xách tay không hộp",
+    "super fake", "rep 1:1", "replica", "hàng f1", "hàng nhái",
+    "iphone lock", "câu sim", "kích pin", "hàng dựng", # Lừa đảo thiết bị
+    "hack acc", "hack nick", "drip shop", "check pass",
+
+    # --- 4. Tiền ảo rác & Scam Crypto (Specific) ---
+    "rug pull", "rút thảm", "sập sàn",
+    "airdrop lừa đảo", "clam token", "nhận coin free",
+    "pi network", "đào pi", # (Tùy quan điểm, nhưng thường bị spam link ref rất nhiều)
+    "mất ví", "lộ private key", "hack ví metamask",
+    "ponzi", "đa cấp tiền ảo", "lãi suất ngày",
+
+    # --- 5. Từ ngữ kích động bạo lực gia đình/xã hội (Toxic) ---
+    "đánh ghen", "danh ghen", "lột đồ đánh ghen",
+    "tạt axit", "tat axit", "thuê giang hồ", "xử đẹp",
+    "chém chết", "chem chet", "xiên chết", "xien chet",
+    "bố mày", "tao giết", "mày chết", "đồ chết tiệt",
+    "đồ con hoang", "con hoang", "con chó chết", "cho chet",
+    'Ahegao' ,
+'Anal' ,
+'Bdsm' ,
+'Big dick' ,
+'Bondage' ,
+'Bukkake' ,
+'Chikan' ,
+'Deepthroat' ,
+'Dildo' ,
+'Enema' ,
+'Exhibitionist' ,
+'Femdom' ,
+'Fisting',
+'Footjob',
+'Futa',
+'Futanari' ,
+'Gangbang' ,
+'Gape' ,
+'Glory hole' ,
+'Handjob',
+'Huge ass' ,
+'Huge breast' ,
+'Huge dick' ,
+'Masturbation' ,
+'MILF' ,
+'Mind break' ,
+'Mind control', 
+'NTR' ,
+'Oral',
+'orgasm' ,
+'Orgy', 
+'Pantyhose' ,
+'Piss',
+'Prolapse' ,
+'Prostitution' ,
+'Public vibrator',
+'Sex toys' ,
+'Slave' ,
+'Slut' ,
+'Slut dress',
+'Squirt',
+'Tentacles' ,'Femboy'
+    
+
 
 ]
 
