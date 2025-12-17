@@ -18,316 +18,245 @@ except ImportError:
 BLACKLIST_KEYWORDS = [
 
     # 1. Tình dục – khiêu dâm
-    "sex", "tình dục", "khiêu dâm", "khiêu dâm trẻ em", "dâm ô",
-    "hiếp dâm", "cưỡng hiếp", "quan hệ tình dục", "mại dâm",
-    "kích dục", "ảnh nóng", "clip nóng", "porn", "xxx",
-    "thủ dâm", "loạn luân", "mua dâm", "bán dâm",
+    "tình dục", "khiêu dâm", "khiêu dâm trẻ em", "dâm ô",
+    "hiếp dâm", "cưỡng hiếp", "mại dâm", "kích dục", 
+    "ảnh nóng", "clip nóng", "thủ dâm", "loạn luân", 
+    "mua dâm", "bán dâm", "ấu dâm", 
 
-    # 2. Ma túy – chất cấm
-    "ma túy", "heroin", "cocaine", "cần sa", "thuốc lắc", "meth",
-    "buôn bán ma túy", "sử dụng ma túy", "chất gây nghiện",
-    "chích ma túy", "trồng cần sa", "pha chế ma túy",
-
-    # 3. Cờ bạc – cá độ
-    "cờ bạc", "đánh bạc", "cá độ", "lô đề", "xổ số lậu",
-    "casino", "đánh bài ăn tiền", "đánh bạc online",
-    "cá cược", "nhà cái", "1xbet", "fun88", "m88", "w88", "fb88", "8xbet", "bet365", "onbet", "letou", "melbet", "men88",
-
-    # 4. Bạo lực – giết chóc – khủng bố
-    "khủng bố", "đánh bom", "ám sát", "giết người",
-    "thảm sát", "chặt đầu", "xả súng",
-    "bom", "mìn", "súng", "tấn công vũ trang",
-    "chế tạo bom", "chế tạo vũ khí",
-
-    # 5. Vũ khí & chiến tranh (phi học thuật)
-    "vũ khí sinh học", "vũ khí hóa học", "vũ khí hạt nhân",
-    "chế tạo vũ khí", "mua bán vũ khí",
-    "sử dụng vũ khí", "buôn lậu vũ khí",
-
-    # 6. Tự tử – tự hại – rối loạn tâm lý nguy cấp
-    "tự tử", "tự sát", "tự hại", "muốn chết",
-    "kết liễu bản thân", "uống thuốc tự tử",
-    "nhảy lầu", "cắt cổ tay",
-
-    # 7. Hacking – an ninh mạng – xâm nhập trái phép
-    "hacking", "hack", "bẻ khóa", "crack",
-    "xâm nhập trái phép", "đánh cắp dữ liệu",
-    "tấn công mạng", "ddos", "phishing",
-    "keylogger", "malware", "virus máy tính",
-    "chiếm quyền điều khiển",
-
-    # 8. Lừa đảo – tội phạm kinh tế – tài chính
-    "lừa đảo", "chiếm đoạt tài sản", "đa cấp",
-    "rửa tiền", "tham nhũng", "hối lộ",
-    "trốn thuế", "làm giả giấy tờ",
-    "lừa đảo trực tuyến", "lừa đảo chiếm đoạt",
-    "gian lận tài chính",
-
-    # 9. Thù hận – xúc phạm – phân biệt
-    "phân biệt chủng tộc", "kỳ thị", "thù hằn",
-    "xúc phạm", "lăng mạ", "miệt thị",
-    "chửi bới", "bôi nhọ", "vu khống",
-    "kích động thù ghét",
-
-    # 10. Chính trị cực đoan / chống phá (ngoài học thuật)
-    "lật đổ", "chống phá nhà nước",
-    "biểu tình bạo loạn", "bạo loạn",
-    "ly khai", "khai quốc riêng",
-    "tuyên truyền phản động",
-    "chủ nghĩa cực đoan",
-
-    # 11. Tội phạm con người & gia đình
-    "mua bán người", "buôn người",
-    "xâm hại trẻ em", "bạo hành gia đình",
-    "bắt cóc", "tra tấn", "ngược đãi",
-
-    # 12. Hành vi trái pháp luật khác
-    "vi phạm pháp luật", "hành vi phạm tội",
-    "che giấu tội phạm", "tiêu thụ tài sản phạm pháp",
-    "đường dây tội phạm",
-
-    # 13. Xâm phạm quyền riêng tư & Doxing (Đánh cắp danh tính)
-    "lộ thông tin", "doxing", "tìm info", "tra cứu thông tin cá nhân",
-    "số cccd", "số chứng minh thư", "lộ clip riêng tư", "xin link",
-    "quay lén", "camera quay lén", "theo dõi vị trí",
-    "ăn cắp danh tính", "giả mạo danh tính",
-
-    # 14. Tin giả, Deepfake & Thao túng thông tin
-    "deepfake", "ghép mặt", "giả giọng nói", "fake news",
-    "tin giả", "tung tin đồn thất thiệt", "thuyết âm mưu",
-    "chỉnh sửa ảnh nhạy cảm", "ghép ảnh nóng",
-
-    # 15. Hàng cấm & Động vật hoang dã (Ngoài vũ khí/ma túy)
-    "ngà voi", "sừng tê giác", "mật gấu", "vảy tê tê",
-    "động vật sách đỏ", "buôn lậu động vật",
-    "tiền giả", "in tiền giả", "tiền âm phủ (lừa đảo)",
-    "làm bằng giả", "làm giấy tờ giả", "bằng lái xe giả",
-
-    # 16. Bắt nạt qua mạng (Cyberbullying) & Quấy rối
-    "bóc phốt", "tẩy chay", "dìm hàng", "ném đá hội đồng",
-    "body shaming", "miệt thị ngoại hình", "công kích cá nhân",
-    "stalking", "bám đuôi", "quấy rối tin nhắn", "đe dọa tung ảnh",
-
-    # 17. Tệ nạn xã hội & Dịch vụ phi pháp khác
-    "đòi nợ thuê", "siết nợ", "tín dụng đen", "vay nặng lãi",
-    "bốc bát họ", "cho vay lãi cắt cổ",
-    "mang thai hộ (thương mại)", "đẻ thuê", "bán thận", "bán nội tạng",
-    "kết hôn giả", "vượt biên trái phép",
-
-    # 18. Từ lóng/Viết tắt thường dùng để lách luật (Cần cập nhật liên tục)
-    "kẹo ke" , "bay lắc", "xào ke", "hàng trắng", "đá", "ma túy đá",
-    "bánh" , "heroin", "gà móng đỏ" , "mại dâm", "checker" , "người mua dâm check hàng",
-    "sugar baby", "sugar daddy" , "biến tướng mại dâm",
-    "fwd" , "chuyển tiếp tin nhắn nhạy cảm",
-    "child porn",  "ấu dâm",
-
-    # 19. Vi phạm bản quyền & Phần mềm lậu (Piracy & Warez)
-    "crack win", "crack office", "bẻ khóa phần mềm",
-    "xem phim lậu", "web phim lậu", "tải game crack",
-    "torrent", "warez", 
-    "phần mềm gián điệp", "tool hack game",
-
-    # 20. Gian lận thi cử & Học thuật (Academic Dishonesty)
-    # (Đặc biệt lưu ý vì bạn là giảng viên)
-    "thi hộ", "học hộ", "làm bài thuê", "viết luận văn thuê",
-    "mua bằng đại học", "làm giả bằng cấp", "chạy điểm",
-    "phao thi", "tai nghe siêu nhỏ", "camera cúc áo",
-    "mua đề thi", "lộ đề thi",
-    "bán bài giải", "chia sẻ đáp án thi",
-    "ghostwriter", "dịch vụ viết thuê",
-    "mua code mẫu", "bán code mẫu",
-
-    # 21. Y tế sai lệch & Sức khỏe độc hại (Misinformation)
-    "anti-vax", "tẩy chay vắc xin", "chữa ung thư bằng thực dưỡng",
-    "thực phẩm chức năng giả", "thuốc tiên", "chữa bách bệnh",
-    "thuốc kích dục nữ", "thuốc mê", "bán thuốc phá thai",
-    "pro-ana", "móc họng giảm cân",
-
-    # 22. Lừa đảo tuyển dụng & Việc làm (Job Scams)
-    "việc nhẹ lương cao", "ngồi nhà kiếm tiền", "cộng tác viên shopee",
-    "chốt đơn nhận hoa hồng", "làm nhiệm vụ like tiktok",
-    "nạp tiền nhận thưởng", "đầu tư sinh lời 100%",
-    "xuất khẩu lao động chui", "vượt biên đi làm",
-
-    # 23. Phân biệt vùng miền (Regional Discrimination - Rất gắt ở VN)
+    # # 2. Ma túy – chất cấm
+    # "heroin", "cocaine", "cần sa", "thuốc lắc", "meth",
+    # "buôn bán ma túy", "chích ma túy", "pha chế ma túy",
     
-    "parky", "nam cầy", "tộc cối",
-    "phân biệt vùng miền", "pbvm",
+    # # 3. Cờ bạc – cá độ (Giữ các nhà cái nổi bật)
+    # "cờ bạc", "đánh bạc", "cá độ", "lô đề", "xổ số lậu",
+    # "đánh bài ăn tiền", "nhà cái", 
+    # "1xbet", "fun88", "m88", "w88", "fb88", "8xbet", "bet365", "onbet", "letou", "melbet", "men88",
 
-    # 24. Tôn giáo mê tín & Tà giáo (Cults & Superstition)
-    "bùa ngải", "yểm bùa", "nuôi kumanthong", "chơi ngải",
-    "hội thánh đức chúa trời", "tà đạo", "truyền đạo trái phép",
-    "lên đồng lừa đảo", "trục vong thu tiền",
+    # # 4. Bạo lực – giết chóc – khủng bố
+    # "khủng bố", "đánh bom", "ám sát", "giết người",
+    # "thảm sát", "chặt đầu", "xả súng",
+    # "chế tạo bom", "chế tạo vũ khí",
 
-    # 25. Từ khóa lóng/Code mới của giới trẻ (Gen Z Slang - Cập nhật)
-     "ons", "fwb" ,
-    "trà xanh" , "tiểu tam",
-    "xếp hình" , "chịch", "xoạc",
-    "nứng", "hứng", "buscu", "vét máng", # Từ lóng thô tục
+    # # 5. Vũ khí & chiến tranh (phi học thuật)
+    # # Giữ các từ liên quan đến chế tạo/buôn bán
+    # "chế tạo vũ khí", "mua bán vũ khí",
+    # "buôn lậu vũ khí",
 
-    # 26. Các loại bom/vũ khí tự chế (Improvised Weapons)
-    "bom xăng", "bom khói", "chế pháo", "thuốc pháo",
-    "dao phóng lợn", "mã tấu", "kiếm nhật",
-    "súng cồn", "súng bắn bi", "ná thun sát thương",
+    # # 6. Tự tử – tự hại – rối loạn tâm lý nguy cấp
+    # "tự tử", "tự sát", "tự hại", "muốn chết",
+    # "kết liễu bản thân", "uống thuốc tự tử",
+    # "nhảy lầu", "cắt cổ tay",
 
-    # 27. Khai thác trẻ vị thành niên & grooming
-"grooming", "dụ dỗ trẻ em", "chat sex với trẻ em",
-"kết bạn trẻ em", "rủ trẻ em đi chơi",
-"quan hệ với trẻ vị thành niên",
+    # # 7. Hacking – an ninh mạng – xâm nhập trái phép
+    # "hacking", "hack", "bẻ khóa", "crack",
+    # "xâm nhập trái phép", "đánh cắp dữ liệu",
+    # "tấn công mạng", "ddos", "phishing",
+    # "keylogger", "malware", "virus máy tính",
+    # "chiếm quyền điều khiển",
 
-# 28. Tấn công sinh học – hóa học (chi tiết nguy hiểm)
-"nuôi vi khuẩn", "tạo virus", "phát tán dịch bệnh",
-"chế tạo chất độc", "phát tán khí độc",
-"vũ khí sinh học tự chế",
+    # # 8. Lừa đảo – tội phạm kinh tế – tài chính
+    # "lừa đảo", "chiếm đoạt tài sản", "đa cấp",
+    # "rửa tiền", "tham nhũng", "hối lộ",
+    # "trốn thuế", "làm giả giấy tờ",
+    # "lừa đảo trực tuyến", "gian lận tài chính",
 
-# 29. Hướng dẫn phạm tội (HOW-TO)
-"cách giết người", "cách trốn công an",
-"cách phi tang xác", "cách rửa tiền",
-"cách lừa đảo", "cách hack",
-"cách tẩu thoát", "hướng dẫn phạm tội",
+    # # 9. Thù hận – xúc phạm – phân biệt
+    # "phân biệt chủng tộc", "kỳ thị", "thù hằn",
+    # "xúc phạm", "lăng mạ", "miệt thị",
+    # "chửi bới", "bôi nhọ", "vu khống",
+    # "kích động thù ghét",
 
-# 30. Trốn tránh pháp luật & kỹ thuật né kiểm soát
-"né thuế", "lách luật", "chuyển tiền bất hợp pháp",
-"tẩu tán tài sản", "né kiểm tra",
-"đối phó công an", "đối phó thanh tra",
+    # # 10. Chính trị cực đoan / chống phá (ngoài học thuật)
+    # "lật đổ", "chống phá nhà nước",
+    # "biểu tình bạo loạn", "bạo loạn",
+    # "ly khai", "tuyên truyền phản động",
+    # "chủ nghĩa cực đoan",
 
-# 31. Thao túng tâm lý & ép buộc
-"tẩy não", "thao túng tâm lý",
-"ép buộc quan hệ", "khống chế tinh thần",
-"đe dọa tinh thần",
+    # # 11. Tội phạm con người & gia đình
+    # "mua bán người", "buôn người",
+    # "xâm hại trẻ em", "bạo hành gia đình",
+    # "bắt cóc", "tra tấn", "ngược đãi",
 
-# 32. Nội dung khiêu khích – kích động tập thể
-"kêu gọi đánh", "kêu gọi giết",
-"kích động đám đông", "kích động bạo lực",
-"kêu gọi trả thù",
+    # # 12. Hành vi trái pháp luật khác
+    # "vi phạm pháp luật", "hành vi phạm tội",
+    # "che giấu tội phạm", "tiêu thụ tài sản phạm pháp",
+    # "đường dây tội phạm",
 
-# 33. Xâm phạm an ninh – cơ sở hạ tầng
-"phá hoại hệ thống", "tấn công hạ tầng",
-"phá hoại điện lưới", "phá hoại mạng",
-"đánh sập hệ thống",
+    # # 13. Xâm phạm quyền riêng tư & Doxing
+    # "doxing", "tìm info", "tra cứu thông tin cá nhân",
+    # "số cccd", "số chứng minh thư", "lộ clip riêng tư", 
+    # "quay lén", "camera quay lén", "theo dõi vị trí",
+    # "ăn cắp danh tính", "giả mạo danh tính",
 
-# 34. Mua bán – trao đổi dịch vụ bất hợp pháp
-"mua bán dữ liệu", "mua bán thông tin cá nhân",
-"mua tài khoản ngân hàng",
-"bán sim rác", "thuê tài khoản ngân hàng",
-"thuê đứng tên công ty",
+    # # 14. Tin giả, Deepfake & Thao túng thông tin
+    # "deepfake", "ghép mặt", "giả giọng nói", 
+    # "tung tin đồn thất thiệt", "chỉnh sửa ảnh nhạy cảm", "ghép ảnh nóng",
 
-# 35. Nội dung kích động thù ghét theo giới tính/xu hướng
-"kỳ thị giới tính", "ghét người đồng tính",
-"chống lgbt", "kỳ thị lgbt",
-"miệt thị giới",
+    # # 15. Hàng cấm & Động vật hoang dã
+    # "ngà voi", "sừng tê giác", "mật gấu", "vảy tê tê",
+    # "động vật sách đỏ", "buôn lậu động vật",
+    # "tiền giả", "in tiền giả", 
+    # "làm bằng giả", "làm giấy tờ giả", "bằng lái xe giả",
 
-# 36. Nội dung xuyên tạc lịch sử – phủ nhận tội ác
-"phủ nhận holocaust", "xuyên tạc lịch sử",
-"bịa đặt lịch sử", "chối bỏ tội ác chiến tranh",
+    # # 16. Bắt nạt qua mạng (Cyberbullying) & Quấy rối
+    # "bóc phốt", "tẩy chay", "dìm hàng", "ném đá hội đồng",
+    # "body shaming", "miệt thị ngoại hình", "công kích cá nhân",
+    # "stalking", "bám đuôi", "quấy rối tin nhắn", "đe dọa tung ảnh",
 
-# 37. Gian lận thương mại & tiêu dùng
-"bán hàng giả", "hàng fake",
-"làm giả nhãn hiệu", "bán thuốc giả",
-"quảng cáo sai sự thật",
+    # # 17. Tệ nạn xã hội & Dịch vụ phi pháp khác
+    # "đòi nợ thuê", "siết nợ", "tín dụng đen", "vay nặng lãi",
+    # "bốc bát họ", "cho vay lãi cắt cổ",
+    # "mang thai hộ (thương mại)", "đẻ thuê", "bán thận", "bán nội tạng",
+    # "kết hôn giả", "vượt biên trái phép",
 
-# 38. Nội dung lợi dụng thiên tai – dịch bệnh
-"lợi dụng dịch bệnh", "trục lợi cứu trợ",
-"lừa đảo cứu trợ", "bán thuốc giả mùa dịch",
+    # # 18. Từ lóng/Viết tắt thường dùng để lách luật
+    # "kẹo ke" , "bay lắc", "xào ke", "hàng trắng", "đá", "ma túy đá",
+    # "gà móng đỏ" , "mại dâm", "checker" , 
+    # "sugar baby", "sugar daddy" , 
+    # "child porn",  
+    
+    # # 19. Vi phạm bản quyền & Phần mềm lậu (Tập trung vào hành vi)
+    # "crack win", "crack office", "bẻ khóa phần mềm",
+    # "xem phim lậu", "tải game crack",
+    # "tool hack game",
 
-# 39. Nội dung thao túng truyền thông – dư luận
-"seeding bẩn", "thao túng dư luận",
-"định hướng dư luận", "dẫn dắt dư luận",
-"bơm tin giả",
+    # # 20. Gian lận thi cử & Học thuật (Giữ các hành vi trực tiếp)
+    # "thi hộ", "học hộ", "làm bài thuê", "viết luận văn thuê",
+    # "mua bằng đại học", "làm giả bằng cấp", "chạy điểm",
+    # "phao thi", "tai nghe siêu nhỏ", "camera cúc áo",
+    # "mua đề thi", "lộ đề thi",
+    # "ghostwriter", "dịch vụ viết thuê",
 
-# 40. Nội dung gây hoảng loạn xã hội
-"gây hoang mang", "lan truyền hoảng loạn",
-"kích động sợ hãi", "đe dọa đánh bom",
+    # # 21. Y tế sai lệch & Sức khỏe độc hại
+    # "thuốc kích dục nữ", "thuốc mê", "bán thuốc phá thai",
+    # "pro-ana", "móc họng giảm cân",
 
-# 41. Lạm dụng AI & deepfake nâng cao
-"giả mạo bằng ai", "deepfake chính trị",
-"giả giọng lãnh đạo", "tạo video giả",
-"mạo danh bằng ai",
+    # # 22. Lừa đảo tuyển dụng & Việc làm
+    # "việc nhẹ lương cao", "ngồi nhà kiếm tiền", 
+    # "nạp tiền nhận thưởng", "đầu tư sinh lời 100%",
+    # "xuất khẩu lao động chui",
 
-# 42. Nội dung phá hoại đạo đức học đường
-"bắt nạt học sinh", "đánh học sinh",
-"làm nhục học sinh", "quay clip đánh bạn",
+    # # 23. Phân biệt vùng miền (Giữ các từ nhạy cảm trực tiếp)
+    # "parky", "nam cầy", "tộc cối",
+    # "phân biệt vùng miền", "pbvm",
 
-# 43. Giao dịch tiền điện tử bất hợp pháp
-"rửa tiền crypto", "trộn tiền",
-"mixer crypto", "ẩn danh tiền điện tử",
-"lừa đảo tiền ảo",
+    # # 24. Tôn giáo mê tín & Tà giáo
+    # "bùa ngải", "yểm bùa", "nuôi kumanthong", "chơi ngải",
+    # "hội thánh đức chúa trời", "tà đạo", "truyền đạo trái phép",
+    # "lên đồng lừa đảo", "trục vong thu tiền",
 
-# 44. Nội dung kích dục trá hình
-"phim 18+", "truyện 18+",
-"chat 18+", "video nóng",
-"ảnh nhạy cảm",
+    # # 25. Từ khóa lóng/Code mới của giới trẻ (Chỉ giữ từ lóng thô tục)
+    # "xếp hình" , "chịch", "xoạc",
+    # "nứng", "hứng", "buscu", "vét máng",
 
-# 45. Từ khóa lách kiểm duyệt (pattern nguy hiểm)
-"s e x", "p*rn", "p0rn", "s3x",
-"h@ck", "cr@ck", "m@ túy",
-"b0m", "v!rus", "ph!shing",
-# --- Sex / Porn ---
-    "s e x", "s.e.x", "s-e-x", "s_e_x", "s  e  x",
-    "se x", "sx", "s3x", "s€x", "s*x", "s^x", "5ex",
-    "p o r n", "p.o.r.n", "p-o-r-n", "p_o_r_n",
-    "porn0", "p0rn", "pörn", "p*rn", "pr0n", "p0rno",
-    "xxx", "x x x", "x.x.x", "x-x-x",
-    "hentai", "h e n t a i", "h3ntai",
-    "jav", "j a v", "j4v",
-    "nude", "n u d e", "n00d", "n00ds", "nudes",
-    "nsfw", "n s f w",
-    "18+", "1 8 +", "18plus", "18 plus",
-    "onlyfans", "0nlyfans", "only f@ns",
+    # # 26. Các loại bom/vũ khí tự chế (Tập trung vào chế tạo/nguy hiểm)
+    # "bom xăng", "bom khói", "chế pháo", "thuốc pháo",
+    # "dao phóng lợn", "mã tấu", "kiếm nhật",
+    # "súng cồn", "súng bắn bi", "ná thun sát thương",
 
-    # --- Drugs ---
-    "m a t u y", "m.a.t.u.y", "m-a-t-u-y", "m_a_t_u_y",
-    "m@ tuy", "m@ túy", "m@tuy", "m@túy",
-    "ma tuy", "ma tuý", "ma tuý", "ma túy",
-    "hàng trắng", "h@ng tr@ng", "hang trang",
-    "kẹo", "k e o", "k3o", "kẹo ke", "k€o",
-    "đá", "d a", "d@", "da", "m@ túy đá", "matuyda",
-    "cần sa", "c@n s@", "can sa", "c4n s4",
-    "weed", "w e e d", "w33d",
-    "meth", "m e t h", "m3th",
-    "heroin", "h e r o i n", "h3roin",
-    "cocaine", "c0caine", "coca1ne",
+    # # 27. Khai thác trẻ vị thành niên & grooming (Giữ nguyên)
+    # "grooming", "dụ dỗ trẻ em", "chat sex với trẻ em",
+    # "quan hệ với trẻ vị thành niên",
 
-    # --- Gambling / betting ---
-    "c o b a c", "cờ b@c", "co bac", "c0 bac",
-    "đánh bạc", "d@nh b@c", "danh bac",
-    "cá độ", "c@ d0", "ca do", "c4 d0",
-    "lô đề", "lo de", "l0 de", "l* de",
-    "nhà cái", "nh@ c@i", "nha cai",
-    "bet", "b e t", "b3t",
-    "1x b e t", "1xbet", "1 x b e t",
-    "fun88", "f u n 8 8", "fún88",
-    "w88", "w 8 8", "fb88", "8xbet", "bet365",
+    # # 28. Tấn công sinh học – hóa học (Giữ nguyên)
+    # "nuôi vi khuẩn", "tạo virus", "phát tán dịch bệnh",
+    # "chế tạo chất độc", "phát tán khí độc",
+    # "vũ khí sinh học tự chế",
 
-    # --- Hacking / cybercrime ---
-    "h a c k", "h.a.c.k", "h-a-c-k", "h_a_c_k",
-    "h@ck", "h4ck", "ha ck",
-    "crack", "cr@ck", "cr4ck", "c r a c k",
-    "bẻ khóa", "b3 kh0a", "be khoa",
-    "phishing", "ph!shing", "ph1shing", "p h i s h i n g",
-    "ddos", "d d o s", "d-d-o-s", "d0s",
-    "keylogger", "k e y l o g g e r", "k3ylogger",
-    "malware", "m a l w a r e", "m@lware",
-    "trojan", "tr0jan", "t r o j a n",
+    # # 29. Hướng dẫn phạm tội (HOW-TO) - Tăng cường
+    # "cách giết người", "cách trốn công an",
+    # "cách phi tang xác", "cách rửa tiền",
+    # "cách lừa đảo", "cách hack",
+    # "cách tẩu thoát", "hướng dẫn phạm tội",
 
-    # --- Weapons / bomb ---
-    "b o m", "b.o.m", "b-o-m", "b_0_m",
-    "b0m", "b@m", "bom xăng", "bom xang",
-    "mìn", "m i n", "m1n",
-    "súng", "s u n g", "sú ng", "súng tự chế",
-    "đạn", "d a n", "d@n",
-    "chế pháo", "che phao", "ch3 phao",
+    # # 30. Trốn tránh pháp luật & kỹ thuật né kiểm soát (Giữ nguyên)
+    # "né thuế", "lách luật", "chuyển tiền bất hợp pháp",
+    # "tẩu tán tài sản", "né kiểm tra",
+    # "đối phó công an", "đối phó thanh tra",
 
-    # --- Suicide / self-harm ---
-    "t u tu", "tự t.ử", "tự tủ", "t.u.t.u",
-    "tu tu", "tự sát", "t u s a t",
-    "cắt cổ tay", "cat co tay", "c@t co t@y",
-    "uống thuốc", "uong thuoc", "u0ng thu0c",
+    # # 31. Thao túng tâm lý & ép buộc (Giữ nguyên)
+    # "tẩy não", "thao túng tâm lý",
+    # "ép buộc quan hệ", "khống chế tinh thần",
+    # "đe dọa tinh thần",
 
-    # --- Hate / slurs (VN obfuscations) ---
-    "p a r k y", "p@rky", "par-ky",
-    "n a m c a y", "n@m c@y", "nam-cay",
-    "t o c c o i", "t0c c0i", "tộc cối", "t0c c0i"
+    # # 32. Nội dung khiêu khích – kích động tập thể (Giữ nguyên)
+    # "kêu gọi đánh", "kêu gọi giết",
+    # "kích động đám đông", "kích động bạo lực",
+    # "kêu gọi trả thù",
+
+    # # 33. Xâm phạm an ninh – cơ sở hạ tầng (Giữ nguyên)
+    # "phá hoại hệ thống", "tấn công hạ tầng",
+    # "phá hoại điện lưới", "phá hoại mạng",
+    # "đánh sập hệ thống",
+
+    # # 34. Mua bán – trao đổi dịch vụ bất hợp pháp (Giữ nguyên)
+    # "mua bán dữ liệu", "mua bán thông tin cá nhân",
+    # "mua tài khoản ngân hàng",
+    # "bán sim rác", "thuê tài khoản ngân hàng",
+    # "thuê đứng tên công ty",
+
+    # # 35. Nội dung kích động thù ghét theo giới tính/xu hướng (Giữ nguyên)
+    # "kỳ thị giới tính", "ghét người đồng tính",
+    # "chống lgbt", "kỳ thị lgbt",
+    # "miệt thị giới",
+
+    # # 36. Nội dung xuyên tạc lịch sử – phủ nhận tội ác (Giữ nguyên)
+    # "phủ nhận holocaust", "xuyên tạc lịch sử",
+    # "bịa đặt lịch sử", "chối bỏ tội ác chiến tranh",
+
+    # # 37. Gian lận thương mại & tiêu dùng (Giữ nguyên)
+    # "bán hàng giả", "hàng fake",
+    # "làm giả nhãn hiệu", "bán thuốc giả",
+    # "quảng cáo sai sự thật",
+
+    # # 39. Nội dung thao túng truyền thông – dư luận (Giữ nguyên)
+    # "seeding bẩn", "thao túng dư luận",
+    # "định hướng dư luận", "dẫn dắt dư luận",
+    # "bơm tin giả",
+
+    # # 40. Nội dung gây hoảng loạn xã hội (Giữ nguyên)
+    # "gây hoang mang", "lan truyền hoảng loạn",
+    # "kích động sợ hãi", "đe dọa đánh bom",
+
+    # # 41. Lạm dụng AI & deepfake nâng cao (Giữ nguyên)
+    # "giả mạo bằng ai", "deepfake chính trị",
+    # "giả giọng lãnh đạo", "tạo video giả",
+    # "mạo danh bằng ai",
+
+    # 42. Nội dung phá hoại đạo đức học đường (Giữ nguyên)
+    "bắt nạt học sinh", "đánh học sinh",
+    "làm nhục học sinh", "quay clip đánh bạn",
+
+    # # 43. Giao dịch tiền điện tử bất hợp pháp (Giữ nguyên)
+    # "rửa tiền crypto", "trộn tiền",
+    # "mixer crypto", "ẩn danh tiền điện tử",
+    # "lừa đảo tiền ảo",
+
+    # 44. Nội dung kích dục trá hình (Giữ nguyên)
+    "phim 18+", "truyện 18+",
+    "chat 18+", "video nóng",
+    "ảnh nhạy cảm",
+
+    # # 45. Từ khóa lách kiểm duyệt (pattern nguy hiểm) - Chỉ giữ các mẫu phổ biến
+    # "s3x", "p0rn", "h@ck", "cr@ck", "m@tuy", "m@túy",
+    # "b0m", "v!rus", "ph!shing",
+    # "s-e-x", "s.e.x", "s_e_x", 
+    # "p-o-r-n", "p_o_r_n", "p0rno",
+    # "n00d", "n00ds", "nudes",
+    # "18+", "1 8 +", 
+    # "onlyfans", "0nlyfans", 
+    # "m@ tuy", "m@ túy",
+    # "h@ng tr@ng", "k3o", "kẹo ke", 
+    # "c@n s@", "c4n s4",
+    # "w33d", "m3th", "h3roin",
+    # "c0caine", "c0 bac", "c@ d0", 
+    # "l0 de", "h4ck", "cr4ck", "b3 kh0a",
+    # "ph!shing", "ph1shing", 
+    # "b0m", "b@m", "b0m xang",
+    # "m1n", "sú ng",
+    # "t.u.t.u", "tự t.ử", "tủ t.u",
+    # "c@t co t@y", "u0ng thu0c",
+    # "p@rky", "n@m c@y", "t0c c0i",
 
 ]
 
@@ -376,36 +305,43 @@ def get_embedding_for_search(text):
 # PHÂN LOẠI CÂU HỎI & AN TOÀN
 # =========================================================
 
-def detect_question_type_and_safety(question):
+def detect_question_type(question):
     q_lower = question.lower()
 
+    # 1. PRECISION CRITICAL (UNSAFE) - Ưu tiên cao nhất
     for bad_word in BLACKLIST_KEYWORDS:
         if bad_word in q_lower:
-            return "UNSAFE"
+            return "PRECISION_CRITICAL"
 
+    # 2. RAG (Đọc hiểu văn bản dài có sẵn trong đề)
+    # Dấu hiệu: Có từ khóa báo hiệu đoạn văn
+    rag_signals = ["đoạn thông tin:", "dựa vào văn bản", "đọc đoạn sau", "thông tin dưới đây:"]
+    if any(s in q_lower for s in rag_signals) or len(question) > 500: # Hoặc câu hỏi quá dài
+        return "RAG_LONG_TEXT"
+
+    # 3. STEM (Toán & Logic)
     stem_keywords = [
         "tính", "giá trị", "phương trình", "hàm số", "biểu thức",
-        "xác suất", "thống kê", "log", "sin", "cos", "tan", "cot",
-        "đạo hàm", "tích phân", "nguyên hàm", "vector", "ma trận",
-        "vận tốc", "gia tốc", "lực", "điện trở", "năng lượng", "công suất",
-        "lãi suất", "gdp", "lạm phát", "cung cầu", "độ co giãn",
-        "mol", "phản ứng", "cân bằng", "khối lượng", "latex", "$", "\\frac" 
-        ]
-
+        "xác suất", "thống kê", "log", "sin", "cos", "tan", 
+        "đạo hàm", "tích phân", "vector", "ma trận",
+        "vận tốc", "gia tốc", "lực", "công suất", "mol", "phản ứng",
+        "tọa độ", "hình học", "tam giác", "số đo", "$", "\\frac"
+    ]
     if any(k in q_lower for k in stem_keywords):
         return "STEM"
 
-    precision_keywords = [
-        "năm nào", "ngày nào", "ai là", "người nào", "ở đâu",
-        "bao nhiêu", "số lượng", "thời gian nào",
-        "nghị định", "luật", "thông tư", "điều khoản", "hiến pháp",
-        "thủ đô", "di tích", "chiến dịch", "hiệp định",
+    # 4. COMPULSORY (Sự kiện, Con số, Địa danh cụ thể - Cần chính xác 100%)
+    compulsory_keywords = [
+        "năm nào", "ngày nào", "ai là", "tên là gì", "người nào", "ở đâu",
+        "bao nhiêu", "số lượng", "thủ đô", "tỉnh nào", "thành phố nào",
+        "điều khoản", "luật số", "nghị định", "hiến pháp", "ngày tháng",
+        "chiến dịch nào", "hiệp định nào", "tác giả nào"
     ]
+    if any(k in q_lower for k in compulsory_keywords):
+        return "COMPULSORY"
 
-    if any(k in q_lower for k in precision_keywords):
-        return "PRECISION"
-
-    return "NORMAL"
+    # 5. MULTIDOMAIN (Còn lại)
+    return "MULTIDOMAIN"
 
 
 def clean_output(ans_text):
@@ -486,7 +422,7 @@ def call_vnpt_llm(prompt, model_type="small", temperature=0.0):
             url,
             headers=headers,
             json=payload,
-            timeout=60
+            timeout=30,
         )
 
         if r.status_code == 200:
@@ -495,11 +431,14 @@ def call_vnpt_llm(prompt, model_type="small", temperature=0.0):
             except Exception as e:
                 print(f"❌ {model_type.upper()} Lỗi parse JSON: {e}")
                 return None
-            
-            # ✅ KIỂM TRA LỖI NỘI DUNG 400 TRONG PHẢN HỒI 200 OK
-            if "error" in data and data["error"].get("code") == 400:
-                print(f"❌ {model_type.upper()} Content Filter trả về lỗi 400 trong payload 200.")
-                return "" 
+
+            # ✅ KIỂM TRA LỖI NỘI DUNG 400 TRONG PHẢN HỒI 200 OK (AN TOÀN HƠN)
+            if "error" in data:
+                error_obj = data["error"]
+                # Kiểm tra nếu error là dict và có code 400
+                if isinstance(error_obj, dict) and error_obj.get("code") == 400:
+                    print(f"❌ {model_type.upper()} Content Filter trả về lỗi 400 trong payload 200.")
+                    return ""
             
             # --- XỬ LÝ PHẢN HỒI THÀNH CÔNG ---
             if "choices" not in data:
@@ -545,226 +484,207 @@ def call_vnpt_llm(prompt, model_type="small", temperature=0.0):
 # GIẢI CÂU HỎI
 # =========================================================
 
+
 def solve_question(item):
     question = item["question"]
     choices = item["choices"]
 
-    q_type = detect_question_type_and_safety(question)
+    # --- 1. PHÂN LOẠI CÂU HỎI & CHECK SAFETY INPUT ---
+    q_type = detect_question_type(question) 
 
-    if q_type == "UNSAFE":
-        return SAFE_ANSWER_DEFAULT, "N/A (UNSAFE QUESTION/FILTERED)"
+    # [CRITICAL] Nếu từ khóa vi phạm -> Chặn ngay lập tức
+    if q_type == "PRECISION_CRITICAL":
+        return "", "N/A (BLOCKED - KEYWORD)"
 
+    # --- 2. CHUẨN BỊ CONTEXT ---
     context_text = ""
     real_question = question
-    is_reading_comprehension = "Đoạn thông tin:" in question
-
-    if is_reading_comprehension:
+    
+    # TRƯỜNG HỢP A: RAG Đọc hiểu (Văn bản nằm ngay trong đề bài)
+    if q_type == "RAG_LONG_TEXT" and "Câu hỏi:" in question:
         parts = question.split("Câu hỏi:")
         context_text = parts[0].strip()
-        real_question = parts[1].strip() if len(parts) > 1 else question
+        real_question = parts[1].strip()
+    
+    # TRƯỜNG HỢP B: Tìm trong DB (Đã bỏ Translation, chỉ Search trực tiếp)
     elif collection:
+        # Tạo vector từ câu hỏi gốc
         query_vec = get_embedding_for_search(real_question)
+        
         if query_vec:
+            # Truy vấn DB
             results = collection.query(
                 query_embeddings=[query_vec],
-                n_results=5,
+                n_results=5, # Lấy 5 đoạn liên quan nhất
             )
+            
             if results["documents"]:
                 docs = results["documents"][0]
+                # Gộp các đoạn lại thành context thô
                 context_text = "\n---\n".join(docs)
 
-    # --- GIỮ NGUYÊN format choices (0. ..., 1. ...) cho đỡ mất công ---
-    choices_str = (
-        "\n. ".join([f"{i}. {v}" for i, v in enumerate(choices)])
-        if isinstance(choices, list)
-        else str(choices)
-    )
+    # --- 3. FORMAT ĐẦU VÀO CHO PROMPT ---
+    choices_str = "\n".join([f"{i}. {v}" for i, v in enumerate(choices)]) if isinstance(choices, list) else str(choices)
+    
+    instruction_text = """
+    ### YÊU CẦU ĐẦU RA (QUAN TRỌNG) ###
+    - Chỉ trả về duy nhất một chữ cái đại diện đáp án (A, B, C, D...) nằm trong thẻ <ans>.
+    - Ví dụ: <ans>A</ans>
+    - TUYỆT ĐỐI KHÔNG giải thích, KHÔNG trình bày lời giải ra ngoài thẻ.
+    """
 
-    # --- Prompt chỉ thị LLM trả về chữ cái tương ứng ---
-    instruction_text = "Hãy chọn đáp án đúng (tương ứng 0->A, 1->B, 2->C, 3->D, 4->E, 5->F, 6->G, 7->H, 8->I, 9->J) và chỉ trả về chữ cái (A, B, C, D, E, F, G, H, I, J). BẮT BUỘC: Đáp án cuối cùng phải nằm trong thẻ <ans>, ví dụ: <ans>A</ans>."
+    # --- 4. TẠO PROMPT THEO TỪNG LOẠI (CÓ BƯỚC REFINEMENT BẮT BUỘC) ---
 
+    # ================= TYPE 1: STEM (Toán học / Logic) =================
     if q_type == "STEM":
         prompt = f"""
-        Bạn là Giáo sư Khoa học Tự nhiên. Nhiệm vụ: Giải bài tập một cách CHÍNH XÁC TUYỆT ĐỐI.
-        Không được đoán. Không được suy diễn ngoài dữ kiện.
-
-
-
-        --- CÔNG THỨC & KIẾN THỨC BỔ TRỢ (CONTEXT) ---
-
-        CHỈ được sử dụng công thức và kiến thức xuất hiện trong CONTEXT dưới đây.
-        Nếu không có công thức phù hợp trong CONTEXT → không được tự suy ra công thức khác.
-
-        {context_text}
-
-
-
-        --- BÀI TOÁN ---
-
-        Câu hỏi: {real_question}
-
-        Các lựa chọn (Index từ 0):
-        {choices_str}
-
-
-
-        --- QUY TRÌNH GIẢI (BẮT BUỘC TUÂN THEO) ---
-
-        1. Xác định DUY NHẤT công thức/định lý cần dùng từ CONTEXT.
-        2. Trích xuất CHÍNH XÁC tất cả các giá trị số và đơn vị trong đề bài.
-        3. Thực hiện tính toán nội bộ.
-        4. ĐỐI CHIẾU kết quả tính được với TỪNG lựa chọn:
-        - Loại bỏ các đáp án sai đơn vị.
-        - Loại bỏ các đáp án không khớp giá trị.
-        5. Chỉ chọn đáp án khớp CHÍNH XÁC nhất với kết quả tính toán.
-        6. Nếu không có đáp án nào khớp chính xác → chọn đáp án KHỚP NHẤT VỀ GIÁ TRỊ VÀ ĐƠN VỊ
-            nhưng CHỈ khi sai số nhỏ và có thể do làm tròn số.
-            Nếu không → vẫn chọn đáp án khớp nhất về ĐƠN VỊ.
-
-
-
-
-        --- KIỂM TRA LẠI (SELF-CHECK) ---
-
-        Trước khi trả lời:
-        - Tự kiểm tra lại phép tính một lần.
-        - Đảm bảo index được chọn đúng với nội dung đáp án.
-
-
-
-        --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
-
-        - KHÔNG trình bày lời giải.
-        - KHÔNG giải thích.
-        - Đáp án trả về dựa trên hướng dẫn sau: {instruction_text}
-        """
-
-    else:
-
-        prompt = f"""
-        Bạn là chuyên gia phân tích thông tin. Nhiệm vụ: trả lời câu hỏi
-        CHỈ dựa trên văn bản được cung cấp. Không dùng kiến thức bên ngoài.
-
-
-
-        --- VĂN BẢN THAM KHẢO (CONTEXT) ---
-
-        {context_text}
-
-
-
-        --- CÂU HỎI ---
-
-        {real_question}
-
-
-
-        --- CÁC LỰA CHỌN ---
-
-        {choices_str}
-
-
-
-        --- BƯỚC 1: PHÂN LOẠI CÂU HỎI (THỰC HIỆN NỘI BỘ) ---
-
-        Xác định câu hỏi thuộc loại nào:
-        A. Truy xuất thông tin trực tiếp
-        (ai, khi nào, ở đâu, sự kiện gì, nhân vật nào...)
-        B. Nhận định / đánh giá / theo ngữ cảnh
-        (vai trò, ý nghĩa, nhận xét, đánh giá, nguyên nhân...)
-
-
-
-        --- BƯỚC 2: CHIẾN LƯỢC THEO LOẠI ---
-
-        [TRƯỜNG HỢP A – TRUY XUẤT THÔNG TIN]
-
-        - Chỉ chọn thông tin được nêu TRỰC TIẾP trong CONTEXT.
-        - Nếu CONTEXT có câu trả lời trùng khớp rõ ràng với câu hỏi → PHẢI chọn đáp án đó.
-        - KHÔNG:
-        + suy luận
-        + chọn người/sự kiện cùng nhóm
-        + chọn thông tin liên quan gián tiếp
-
-        Ví dụ cấm:
-        - Câu hỏi hỏi 1 nhân vật → không chọn nhân vật khác trong cùng danh sách.
-
-
-
-        [TRƯỜNG HỢP B – NHẬN ĐỊNH / THEO NGỮ CẢNH]
-
-        - Đọc TOÀN BỘ đoạn liên quan.
-        - Xác định các LUỒNG QUAN ĐIỂM nếu có (ủng hộ / phản đối).
-        - Ưu tiên đáp án phản ánh ĐẦY ĐỦ ngữ cảnh.
-        - Không chọn đáp án:
-        + chỉ đúng một phía
-        + hoặc không được CONTEXT hỗ trợ rõ ràng.
-
-
-
-        --- BƯỚC 3: KIỂM TRA CUỐI (BẮT BUỘC) ---
-
-        Trước khi trả lời, tự kiểm tra:
-        - Đáp án có được nêu trực tiếp hoặc suy ra rõ ràng từ CONTEXT không?
-        - Có đáp án nào khớp TRỰC TIẾP hơn không?
-        - Có chọn nhầm người/sự kiện cùng nhóm không?
-
-
-
-        --- YÊU CẦU ĐẦU RA (BẮT BUỘC) ---
-
-        - KHÔNG giải thích.
-        - Đáp án trả về dựa trên hướng dẫn sau: {instruction_text}
-        """
-
-    # ================================
-    # 1️⃣ LUÔN GỌI SMALL TRƯỚC
-    # ================================
-    ans_small = call_vnpt_llm(prompt, model_type="small", temperature=0.0)
-    final_choice = clean_output(ans_small) # final_choice là A-J, None, Z, hoặc X
-
-    # --- KIỂM TRA LỖI 400 NGAY LẬP TỨC (Dấu hiệu: Z) ---
-    if final_choice == "Z":
-        print("🛑 Small LLM bị Content Filter. Trả về rỗng theo yêu cầu.")
-        return "", context_text # Trả về chuỗi rỗng ""
-
-    # ================================
-    # 2️⃣ FALLBACK LARGE (SỬA LỖI LOGIC)
-    # ================================
-    # Kích hoạt Fallback nếu: 
-    # A. Lỗi Server/Key/Timeout (final_choice == None)
-    # HOẶC
-    # B. Lỗi Parsing/Vô nghĩa (final_choice == PARSE_FAIL_FLAG "X")
-    
-    if final_choice is None or final_choice == PARSE_FAIL_FLAG: 
+        Bạn là Giáo sư Khoa học Tự nhiên. Nhiệm vụ: Giải bài tập CHÍNH XÁC TUYỆT ĐỐI.
         
-        print(f"🔄 Fallback SMALL → LARGE (Nguyên nhân: {'Lỗi Server/Key' if final_choice is None else 'Lỗi Format'})")
+        --- DỮ LIỆU THÔ (RAW CONTEXT) ---
+        {context_text}
+
+        --- BƯỚC 1: LÀM SẠCH VÀ TRÍCH XUẤT (BẮT BUỘC) ---
+        Dữ liệu thô có thể chứa thông tin rác hoặc lỗi định dạng. Hãy thực hiện:
+        1. Lọc bỏ các ký tự lạ, header/footer không liên quan.
+        2. Trích xuất chính xác các công thức toán/lý/hóa và hằng số quan trọng.
+        3. Viết lại đề bài và dữ kiện dưới dạng ngắn gọn, chuẩn xác nhất.
+
+        --- BƯỚC 2: GIẢI BÀI TOÁN (DỰA TRÊN DỮ LIỆU ĐÃ LÀM SẠCH) ---
+        Câu hỏi: {real_question}
+        Lựa chọn:
+        {choices_str}
+
+        Quy trình:
+        1. Sử dụng công thức đã trích xuất ở Bước 1.
+        2. Thay số và tính toán nội bộ (Double-check kết quả).
+        3. Đối chiếu kết quả với các lựa chọn.
+        
+        {instruction_text}
+        """
+
+    # ================= TYPE 2: COMPULSORY (Tra cứu sự thật / Chính xác) =================
+    elif q_type == "COMPULSORY":
+        prompt = f"""
+        Bạn là Chuyên gia Tra cứu Dữ liệu (Fact-Checker). 
+        Nhiệm vụ: Tìm đáp án chính xác từng ký tự/con số. KHÔNG ĐƯỢC SUY ĐOÁN.
+
+        --- DỮ LIỆU THÔ (RAW CONTEXT) ---
+        {context_text}
+
+        --- BƯỚC 1: TÁI CẤU TRÚC THÔNG TIN (REFINEMENT) ---
+        1. Đọc Context thô, loại bỏ các đoạn văn rác/không có nghĩa.
+        2. Tìm kiếm và làm nổi bật các thực thể: Năm, Tên người, Địa danh, Số liệu, Điều luật.
+        3. Sắp xếp lại thông tin theo trình tự thời gian hoặc logic.
+
+        --- BƯỚC 2: ĐỐI CHIẾU ---
+        Câu hỏi: {real_question}
+        Lựa chọn:
+        {choices_str}
+
+        Quy trình:
+        1. So khớp keywords trong câu hỏi với Thông tin đã tái cấu trúc.
+        2. Chọn đáp án có thông tin TRÙNG KHỚP HOÀN TOÀN.
+        
+        {instruction_text}
+        """
+
+    # ================= TYPE 3: RAG_LONG_TEXT (Đọc hiểu văn bản) =================
+    elif q_type == "RAG_LONG_TEXT":
+        prompt = f"""
+        Bạn là Trợ lý Đọc hiểu. Nhiệm vụ: Trả lời câu hỏi CHỈ DỰA TRÊN văn bản cung cấp.
+
+        --- VĂN BẢN NGUỒN ---
+        {context_text}
+
+        --- BƯỚC 1: ĐỊNH VỊ VÀ LÀM RÕ ---
+        1. Xác định đoạn văn chứa thông tin trả lời trong Văn bản nguồn.
+        2. Tự tóm tắt ý nghĩa của đoạn văn đó (bỏ qua các từ ngữ gây nhiễu).
+
+        --- BƯỚC 2: TRẢ LỜI ---
+        Câu hỏi: {real_question}
+        Lựa chọn:
+        {choices_str}
+
+        Quy trình:
+        1. So sánh ý nghĩa tóm tắt với các lựa chọn.
+        2. Chọn đáp án diễn đạt lại (paraphrase) đúng nhất.
+        
+        {instruction_text}
+        """
+
+    # ================= TYPE 4: MULTIDOMAIN (Đa lĩnh vực / Normal) =================
+    else: # MULTIDOMAIN
+        prompt = f"""
+        Bạn là Chuyên gia Phân tích Tổng hợp. Nhiệm vụ: Chọn đáp án phù hợp nhất theo ngữ cảnh.
+
+        --- DỮ LIỆU THÔ (RAW CONTEXT) ---
+        {context_text}
+
+        --- BƯỚC 1: LÀM SẠCH VÀ TỔNG HỢP ---
+        1. Loại bỏ thông tin rác (số trang, tiêu đề lặp lại, ký tự lỗi).
+        2. Tóm tắt các ý chính liên quan đến chủ đề câu hỏi.
+
+        --- BƯỚC 2: PHÂN TÍCH ---
+        Câu hỏi: {real_question}
+        Lựa chọn:
+        {choices_str}
+
+        Quy trình:
+        1. Dùng thông tin đã làm sạch để trả lời.
+        2. Nếu thiếu thông tin trực tiếp, dùng tư duy logic suy luận từ các manh mối còn lại.
+        
+        {instruction_text}
+        """
+
+    # --- 5. GỌI LLM & XỬ LÝ KẾT QUẢ ---
+
+    # [CHIẾN LƯỢC CHO STEM]: Gọi thẳng LARGE
+    if q_type == "STEM":
+        print(f"🧮 STEM detected: Dùng trực tiếp LARGE model.")
         
         ans_large = call_vnpt_llm(prompt, model_type="large", temperature=0.0)
-        large_choice = clean_output(ans_large)
-
-        # --- KIỂM TRA LỖI 400 CỦA LARGE ---
-        if large_choice == "Z":
-            print("🛑 Large LLM bị Content Filter. Trả về rỗng theo yêu cầu.")
-            return "", context_text 
-
-        # --- GÁN KẾT QUẢ LARGE HOẶC GÁN MẶC ĐỊNH ---
-        # Nếu Large trả lời thành công (không phải None, không phải X), dùng kết quả Large
-        if large_choice is not None and large_choice != PARSE_FAIL_FLAG:
-             final_choice = large_choice # Cập nhật kết quả (A-J)
-        else:
-             # Nếu Large cũng thất bại, trả về đáp án mặc định an toàn
-             final_choice = SAFE_ANSWER_DEFAULT
-    
-    # --- BƯỚC CUỐI CÙNG: ĐẢM BẢO LUÔN CÓ KẾT QUẢ HỢP LỆ ---
-    # Nếu Small thành công, nó sẽ nhảy qua Fallback và final_choice đã là A-J.
-    # Nếu Fallback xảy ra, final_choice đã được gán A-J hoặc SAFE_ANSWER_DEFAULT.
-    
-    # Trường hợp duy nhất cần kiểm tra lại là nếu có lỗi logic không lường trước.
-    if final_choice is None or final_choice == PARSE_FAIL_FLAG:
-        final_choice = SAFE_ANSWER_DEFAULT
         
-    return final_choice, context_text
+        # Check lỗi Content Filter (trả về rỗng)
+        if ans_large == "": 
+            print("🛑 STEM bị chặn (Content Filter). Trả về rỗng.")
+            return "", context_text
+
+        final_choice = clean_output(ans_large)
+        
+        if final_choice is None or final_choice == "X":
+            final_choice = "A" # Default
+            
+        return final_choice, context_text
+
+    # [CHIẾN LƯỢC CHO CÁC LOẠI KHÁC]: SMALL -> Fallback LARGE
+    else:
+        # B1: Gọi Small
+        ans_small = call_vnpt_llm(prompt, model_type="small", temperature=0.0)
+        
+        if ans_small == "": # Check Filter
+            print("🛑 Small LLM bị chặn. Trả về rỗng.")
+            return "", context_text
+
+        final_choice = clean_output(ans_small)
+
+        # B2: Fallback Large
+        if final_choice is None or final_choice == "X":
+            print(f"🔄 Fallback SMALL -> LARGE ({q_type})")
+            
+            ans_large = call_vnpt_llm(prompt, model_type="large", temperature=0.0)
+            
+            if ans_large == "": # Check Filter Large
+                print("🛑 Large LLM (Fallback) bị chặn. Trả về rỗng.")
+                return "", context_text
+                
+            large_choice = clean_output(ans_large)
+            
+            if large_choice is not None and large_choice != "X":
+                 final_choice = large_choice
+            else:
+                 final_choice = "A" # Safe Default
+
+        return final_choice, context_text
 
 
 # print("TEST SMALL:")
@@ -777,8 +697,8 @@ def solve_question(item):
 if __name__ == "__main__":
     # --- 1. CẤU HÌNH ---
     MODE = "LOCAL"
-    INPUT_FILE_PATH = "data/val.json" 
-    OUTPUT_FILE_PATH = "submission_local.csv"
+    INPUT_FILE_PATH = "data/test.json" 
+    OUTPUT_FILE_PATH = "submission_3.csv"
     MAX_QUESTIONS_TO_PROCESS = None 
     
     if len(sys.argv) > 1:
