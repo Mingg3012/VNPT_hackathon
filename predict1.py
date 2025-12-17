@@ -318,13 +318,47 @@ def detect_question_type(question):
 
     # 3. STEM (Toán & Logic)
     stem_keywords = [
-        'tính', 'giá trị', 'phương trình', 'hàm số', 'biểu thức',
-    'xác suất', 'thống kê', 'log', 'sin', 'cos', 'tan', 'cot',
-    'đạo hàm', 'tích phân', 'nguyên hàm', 'vector', 'ma trận',
-    'vận tốc', 'gia tốc', 'lực', 'điện trở', 'năng lượng', 'công suất',
-    'mol', 'phản ứng', 'cân bằng', 'khối lượng', 'hoá chất', 'hoá học',
-    'enzyme', 'protein', 'dna', 'gen', 'tế bào', 'sinh học', 'vi khuẩn',
-    'latex', '$', '\\\\frac', 'công thức', 'chứng minh'
+# Toán nâng cao
+    'vi phân', 'gradient', 'jacobian', 'hessian',
+    'chuẩn hóa', 'xấp xỉ', 'tối ưu hóa',
+    'eigenvalue', 'eigenvector', 'không gian vector', 'toán rời rạc', 'đồ thị', 'cây', 'tổ hợp',
+    'chỉnh hợp', 'hoán vị',
+    'phép chiếu', 'phép quay',
+    'chuẩn hóa dữ liệu', 'vi phân', 'gradient', 'jacobian', 'hessian',
+    'chuẩn hóa', 'xấp xỉ', 'tối ưu hóa',
+    'eigenvalue', 'eigenvector', 'không gian vector', 
+
+    # Vật lý
+    'động lượng', 'momen', 'momen quán tính',
+    'dao động', 'cộng hưởng', 'nhiệt động lực học',
+    'entropy', 'áp suất', 'thể tích','điện trường', 'từ thông',
+    'hiệu điện thế',
+    'quang phổ', 'nhiễu xạ',
+    'chuyển động tròn', 'chuyển động thẳng biến đổi đều', 'va chạm', 'đàn hồi', 'không đàn hồi',
+    'định luật bảo toàn',
+    'nhiệt lượng', 'dẫn nhiệt',
+
+    # Hóa học
+    'dung dịch', 'nồng độ', 'pH', 'oxi hóa',
+    'khử', 'điện phân', 'xúc tác', 'liên kết ion', 'liên kết cộng hóa trị',
+    'phản ứng oxi hóa khử',
+    'nhiệt phản ứng',
+    'tốc độ phản ứng', 'hằng số cân bằng',
+    'phản ứng thuận nghịch',
+    'dung môi', 'chất tan',
+
+    # Sinh học
+    'phiên mã', 'dịch mã', 'đột biến',
+    'tiến hóa', 'chọn lọc tự nhiên', 'sinh trưởng', 'phát triển',
+    'quang hợp', 'hô hấp tế bào',
+    'chu kỳ tế bào', 'di truyền học',
+    'sinh thái học',
+    'chuỗi thức ăn',
+    'lưới thức ăn'
+
+    # Kỹ thuật – CNTT (chưa trùng)
+    'mô phỏng', 'hệ thống', 'tự động hóa',
+    'trí tuệ nhân tạo', 'học máy'
     ]
     if any(k in q_lower for k in stem_keywords):
         return "STEM"
