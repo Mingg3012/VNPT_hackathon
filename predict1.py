@@ -331,9 +331,31 @@ def detect_question_type(question):
 
     # 4. COMPULSORY (Sự kiện, Con số, Địa danh cụ thể - Cần chính xác 100%)
     compulsory_keywords = [
-     'là gì', 'cái gì', 'ai là', 'khi nào', 'ở đâu', 'bao nhiêu',
-    'định nghĩa', 'ý nghĩa', 'tác dụng', 'chức năng', 'đặc điểm',
-    'phân biệt', 'so sánh', 'khác biệt', 'giống nhau'
+   # nguyên nhân – mục đích
+    "vì sao", "tại sao", "do đâu", "nguyên nhân", "mục đích", "để làm gì",
+    "ý nghĩa", "vai trò", "tác dụng",
+
+    # cách thức – quá trình
+    "như thế nào", "ra sao", "bằng cách nào",
+    "cách thức", "quy trình", "trình tự", "các bước",
+    "cơ chế", "hoạt động như thế nào",
+
+    # khái niệm – bản chất
+    "là gì", "được hiểu là", "khái niệm", "nêu khái niệm",
+    "định nghĩa", "bản chất", "đặc trưng", "tính chất", "đặc điểm",
+
+    # phân loại – cấu trúc
+    "có mấy loại", "gồm những loại nào",
+    "phân loại", "chia thành", "cấu trúc", "thành phần", "yếu tố",
+
+    # so sánh – đánh giá
+    "so sánh", "phân biệt", "khác nhau", "giống nhau",
+    "nhận xét", "đánh giá",
+
+    # trình bày – liệt kê
+    "trình bày", "trình bày ngắn gọn",
+    "nêu", "cho biết", "liệt kê", "kể tên", "chỉ ra",
+
     ]
     if any(k in q_lower for k in compulsory_keywords):
         return "COMPULSORY"
