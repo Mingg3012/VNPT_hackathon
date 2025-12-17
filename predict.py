@@ -321,11 +321,11 @@ def detect_question_type(question):
 
     # 3. STEM (Toán & Logic)
     stem_keywords = [
-        "tính", "giá trị", "phương trình", "hàm số", "biểu thức",
+        "phương trình", "hàm số", "biểu thức",
         "xác suất", "thống kê", "log", "sin", "cos", "tan", 
         "đạo hàm", "tích phân", "vector", "ma trận",
-        "vận tốc", "gia tốc", "lực", "công suất", "mol", "phản ứng",
-        "tọa độ", "hình học", "tam giác", "số đo", "$", "\\frac"
+        "vận tốc", "gia tốc", "công suất", "mol", "phản ứng",
+        "tọa độ", "hình học", "tam giác", "$", "\\frac"
     ]
     if any(k in q_lower for k in stem_keywords):
         return "STEM"
